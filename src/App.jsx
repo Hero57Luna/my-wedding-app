@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<InvitationApp />} />
           <Route path="/login" element={<LoginPage />} />
           <Route
-            path="/dashboard"
+            path="/dashboard/*"
             element={
               <ProtectedRoute>
                 <DashboardApp />
