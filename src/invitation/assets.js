@@ -1,5 +1,5 @@
 export const MAIN_IMAGE =
-  'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1400&q=80'
+  'https://wedding-bagas-dhela.web.app/main-photo.jpg'
 
 export const OPENING_IMAGE =
   'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80'

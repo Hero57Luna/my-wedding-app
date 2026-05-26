@@ -1,7 +1,61 @@
+import { useState } from 'react'
 import { useGuestList } from '../hooks/useGuestList'
 import { GUESTS_PAGE_SIZE } from '../services/guests'
 
 const DEBOUNCE_MS = 300
+
+function GuestDetailModal({ guest, onClose }) {
+  if (!guest) return null
+
+  const fields = [
+    { label: 'First Name', value: guest.first_name || '—' },
+    { label: 'Last Name', value: guest.last_name || '—' },
+    { label: 'Address', value: guest.address || '—' },
+    { label: 'Present', value: guest.present ? 'Yes' : 'No' },
+  ]
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guest-modal-title"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm rounded-xl border border-stone-200 bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+          <h3
+            id="guest-modal-title"
+            className="font-serif text-lg text-stone-900"
+          >
+            Guest Detail
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="rounded-md p-1 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <dl className="divide-y divide-stone-100 px-6 py-2">
+          {fields.map(({ label, value }) => (
+            <div key={label} className="flex justify-between gap-4 py-3">
+              <dt className="font-serif text-xs uppercase tracking-[0.12em] text-stone-500">{label}</dt>
+              <dd className="text-right text-sm text-stone-800 break-words max-w-[60%]">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  )
+}
 
 function GuestsPage() {
   const {
@@ -18,6 +72,8 @@ function GuestsPage() {
     updatingIds,
     isDebouncing,
   } = useGuestList()
+
+  const [selectedGuest, setSelectedGuest] = useState(null)
 
   const isBusy = loading || isDebouncing
   const pageNumber = pageIndex + 1
@@ -65,27 +121,28 @@ function GuestsPage() {
               <th className="px-4 py-3">Last Name</th>
               <th className="px-4 py-3">Address</th>
               <th className="px-4 py-3 text-center">Present</th>
+              <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100" aria-busy={isBusy}>
             {isBusy ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
                   Loading guests…
                 </td>
               </tr>
             ) : guests.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
                   No guests found.
                 </td>
               </tr>
             ) : (
               guests.map((guest) => (
                 <tr key={guest.id} className="text-stone-800">
-                  <td className="px-4 py-3">{guest.first_name}</td>
-                  <td className="px-4 py-3">{guest.last_name}</td>
-                  <td className="px-4 py-3">{guest.address || '—'}</td>
+                  <td className="max-w-[10rem] truncate px-4 py-3" title={guest.first_name}>{guest.first_name}</td>
+                  <td className="max-w-[10rem] truncate px-4 py-3" title={guest.last_name}>{guest.last_name}</td>
+                  <td className="max-w-[16rem] truncate px-4 py-3" title={guest.address || '—'}>{guest.address || '—'}</td>
                   <td className="px-4 py-3 text-center">
                     <input
                       type="checkbox"
@@ -97,6 +154,15 @@ function GuestsPage() {
                       }
                       className="h-4 w-4 rounded border-stone-300 text-stone-800 focus:ring-stone-400 disabled:opacity-50"
                     />
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedGuest(guest)}
+                      className="rounded border border-stone-300 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+                    >
+                      Details
+                    </button>
                   </td>
                 </tr>
               ))
@@ -128,6 +194,8 @@ function GuestsPage() {
           </button>
         </div>
       </div>
+
+      <GuestDetailModal guest={selectedGuest} onClose={() => setSelectedGuest(null)} />
     </div>
   )
 }
