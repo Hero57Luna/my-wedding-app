@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 
 const navItems = [
   { to: '/dashboard', label: 'Home', end: true },
-  // Future: { to: '/dashboard/guests', label: 'Guests' },
+  { to: '/dashboard/guests', label: 'Guest' },
 ]
 
 function linkClassName({ isActive }) {
