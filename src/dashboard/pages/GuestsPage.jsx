@@ -1,12 +1,11 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useGuestList } from '../hooks/useGuestList'
 import { GUESTS_PAGE_SIZE } from '../services/guests'
 
 const DEBOUNCE_MS = 300
 
 function GuestDetailModal({ guest, onClose }) {
-  if (!guest) return null
-
   const fields = [
     { label: 'First Name', value: guest.first_name || '—' },
     { label: 'Last Name', value: guest.last_name || '—' },
@@ -15,14 +14,22 @@ function GuestDetailModal({ guest, onClose }) {
   ]
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="guest-modal-title"
       onClick={onClose}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.97, y: 6 }}
+        transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
         className="w-full max-w-sm rounded-xl border border-stone-200 bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -52,8 +59,8 @@ function GuestDetailModal({ guest, onClose }) {
             </div>
           ))}
         </dl>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -195,7 +202,11 @@ function GuestsPage() {
         </div>
       </div>
 
-      <GuestDetailModal guest={selectedGuest} onClose={() => setSelectedGuest(null)} />
+      <AnimatePresence>
+        {selectedGuest && (
+          <GuestDetailModal guest={selectedGuest} onClose={() => setSelectedGuest(null)} />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

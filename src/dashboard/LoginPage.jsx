@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { motion } from 'motion/react'
 import { useAuth } from '../auth/useAuth'
 
 function LoginPage() {
@@ -50,7 +51,12 @@ function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-stone-100 px-5 text-stone-800">
-      <div className="w-full max-w-md rounded-lg border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}
+        className="w-full max-w-md rounded-lg border border-stone-200 bg-white p-6 shadow-sm sm:p-8"
+      >
         <header className="border-b border-stone-200 pb-5">
           <p className="font-serif text-xs uppercase tracking-[0.28em] text-stone-500">
             Wedding Admin
@@ -157,7 +163,7 @@ function LoginPage() {
             {isGoogleSubmitting ? 'Signing in…' : 'Sign in with Google'}
           </button>
         </form>
-      </div>
+      </motion.div>
     </main>
   )
 }

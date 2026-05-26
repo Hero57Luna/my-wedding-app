@@ -1,12 +1,22 @@
 import { useState, useCallback } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'motion/react'
 import { useAuth } from '../auth/useAuth'
 import DashboardNav from './components/DashboardNav'
 import DashboardMobileMenu from './components/DashboardMobileMenu'
 
+const pageVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -6 },
+}
+
+const pageTransition = { duration: 0.22, ease: [0.25, 1, 0.5, 1] }
+
 function DashboardLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const handleLogout = useCallback(async () => {
@@ -50,9 +60,19 @@ function DashboardLayout() {
           </button>
         </aside>
 
-        <div className="min-w-0 flex-1">
-          <Outlet />
-        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={location.pathname}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={pageTransition}
+            className="min-w-0 flex-1"
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </main>
   )

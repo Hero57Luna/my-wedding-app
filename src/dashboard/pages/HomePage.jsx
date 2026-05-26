@@ -35,24 +35,28 @@ function HomePage() {
         aria-busy={loading}
       >
         <SummaryCard
+          index={0}
           label="Total guests"
           value={formatCount(summary?.totalGuests, loading)}
           hint="Invited or registered"
           accent="stone"
         />
         <SummaryCard
+          index={1}
           label="Present"
           value={formatCount(summary?.presentGuests, loading)}
           hint="Checked in at venue"
           accent="emerald"
         />
         <SummaryCard
+          index={2}
           label="Not yet arrived"
           value={formatCount(summary?.absentGuests, loading)}
           hint="Still expected"
           accent="amber"
         />
         <SummaryCard
+          index={3}
           label="Attendance"
           value={loading ? '—' : `${rate}%`}
           hint={
