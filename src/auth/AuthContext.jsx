@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth'
 import { auth } from '../firebase/config'
@@ -30,6 +32,17 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  const loginWithGoogle = useCallback(async () => {
+    try {
+      const provider = new GoogleAuthProvider()
+      await signInWithPopup(auth, provider)
+      return { ok: true }
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') return { ok: false, error: null }
+      return { ok: false, error: getFirebaseAuthErrorMessage(error) }
+    }
+  }, [])
+
   const logout = useCallback(async () => {
     await signOut(auth)
   }, [])
@@ -40,9 +53,10 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(user),
       isLoading,
       login,
+      loginWithGoogle,
       logout,
     }),
-    [user, isLoading, login, logout],
+    [user, isLoading, login, loginWithGoogle, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
