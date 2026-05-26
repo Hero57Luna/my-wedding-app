@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   doc,
   getDocs,
@@ -11,7 +12,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 
-export const GUESTS_PAGE_SIZE = 10
+export const GUESTS_PAGE_SIZE = 50
 const SEARCH_FETCH_MAX = 100
 
 const guestsRef = collection(db, 'guests')
@@ -176,4 +177,27 @@ export async function fetchGuestsPage({
 
 export async function setGuestPresent(guestId, present) {
   await updateDoc(doc(db, 'guests', guestId), { present })
+}
+
+function capitalizeWords(str) {
+  return str
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+export async function addGuest({ first_name, last_name, address, gender, present }) {
+  const cappedFirst = capitalizeWords(first_name)
+  const cappedLast = capitalizeWords(last_name)
+  const cappedAddress = capitalizeWords(address)
+  const search_name = `${cappedFirst} ${cappedLast}`.trim().toLowerCase()
+
+  await addDoc(guestsRef, {
+    first_name: cappedFirst,
+    last_name: cappedLast,
+    address: cappedAddress,
+    gender,
+    present,
+    search_name,
+  })
 }

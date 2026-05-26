@@ -50,7 +50,7 @@ function DashboardMobileMenu({ menuOpen, onToggle, onClose, user, onLogout }) {
       {/* Fixed mobile header */}
       <header className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between border-b border-stone-200 bg-stone-50/95 px-4 backdrop-blur-sm">
         <div className="flex items-center gap-2.5">
-          <img src="/favicon.svg" alt="" aria-hidden className="h-7 w-7 shrink-0" />
+          <img src="/bagasdhela.svg" alt="" aria-hidden className="h-7 w-7 shrink-0" />
           <span className="font-serif text-xs uppercase tracking-[0.28em] text-stone-500">
             Wedding Admin
           </span>
@@ -88,7 +88,7 @@ function DashboardMobileMenu({ menuOpen, onToggle, onClose, user, onLogout }) {
       >
         {/* Drawer header */}
         <div className="flex items-center gap-3 border-b border-stone-200 px-5 py-4">
-          <img src="/favicon.svg" alt="" aria-hidden className="h-8 w-8 shrink-0" />
+          <img src="/bagasdhela.svg" alt="" aria-hidden className="h-8 w-8 shrink-0" />
           <div>
             <p className="font-serif text-[10px] uppercase tracking-[0.28em] text-stone-500">
               Wedding Admin

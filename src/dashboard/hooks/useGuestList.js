@@ -17,6 +17,7 @@ export function useGuestList() {
   const [pageIndex, setPageIndex] = useState(0)
   const [hasNext, setHasNext] = useState(false)
   const [updatingIds, setUpdatingIds] = useState(() => new Set())
+  const [refreshKey, setRefreshKey] = useState(0)
   const pageCursorsRef = useRef([])
   const searchResultsRef = useRef([])
 
@@ -78,9 +79,16 @@ export function useGuestList() {
     return () => {
       cancelled = true
     }
-  }, [debouncedSearch, pageIndex])
+  }, [debouncedSearch, pageIndex, refreshKey])
 
   const isDebouncing = searchInput.trim() !== debouncedSearch
+
+  const refresh = useCallback(() => {
+    pageCursorsRef.current = []
+    searchResultsRef.current = []
+    setPageIndex(0)
+    setRefreshKey((k) => k + 1)
+  }, [])
 
   const goNext = useCallback(() => {
     if (hasNext) setPageIndex((page) => page + 1)
@@ -135,5 +143,6 @@ export function useGuestList() {
     togglePresent,
     updatingIds,
     isDebouncing,
+    refresh,
   }
 }

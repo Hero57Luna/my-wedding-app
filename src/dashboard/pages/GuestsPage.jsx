@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useGuestList } from '../hooks/useGuestList'
-import { GUESTS_PAGE_SIZE } from '../services/guests'
+import { addGuest, GUESTS_PAGE_SIZE } from '../services/guests'
 
 const DEBOUNCE_MS = 300
 
@@ -64,6 +64,179 @@ function GuestDetailModal({ guest, onClose }) {
   )
 }
 
+const EMPTY_FORM = { first_name: '', last_name: '', address: '', gender: 'male', present: 'true' }
+
+function AddGuestModal({ onClose, onSaved }) {
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
+
+  function handleChange(e) {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setSaving(true)
+    setError(null)
+    try {
+      await addGuest({
+        first_name: form.first_name,
+        last_name: form.last_name,
+        address: form.address,
+        gender: form.gender,
+        present: form.present === 'true',
+      })
+      onSaved()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add guest')
+      setSaving(false)
+    }
+  }
+
+  const inputClass =
+    'mt-1.5 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200 disabled:opacity-50'
+  const labelClass = 'block font-serif text-xs uppercase tracking-[0.12em] text-stone-600'
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-guest-modal-title"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.97, y: 6 }}
+        transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
+        className="w-full max-w-md rounded-xl border border-stone-200 bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+          <h3 id="add-guest-modal-title" className="font-serif text-lg text-stone-900">
+            Add Guest
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="rounded-md p-1 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {error ? (
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+              {error}
+            </p>
+          ) : null}
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ag-first-name" className={labelClass}>First Name</label>
+              <input
+                id="ag-first-name"
+                name="first_name"
+                type="text"
+                required
+                value={form.first_name}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="ag-last-name" className={labelClass}>Last Name</label>
+              <input
+                id="ag-last-name"
+                name="last_name"
+                type="text"
+                value={form.last_name}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="ag-address" className={labelClass}>Address</label>
+            <input
+              id="ag-address"
+              name="address"
+              type="text"
+              value={form.address}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ag-gender" className={labelClass}>Gender</label>
+              <select
+                id="ag-gender"
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ag-present" className={labelClass}>Present</label>
+              <select
+                id="ag-present"
+                name="present"
+                value={form.present}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              >
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={saving}
+              className="rounded-md border border-stone-300 bg-white px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-stone-700 transition hover:bg-stone-50 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-md bg-stone-800 px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-white transition hover:bg-stone-700 disabled:opacity-50"
+            >
+              {saving ? 'Saving…' : 'Add Guest'}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 function GuestsPage() {
   const {
     searchInput,
@@ -78,20 +251,34 @@ function GuestsPage() {
     togglePresent,
     updatingIds,
     isDebouncing,
+    refresh,
   } = useGuestList()
 
   const [selectedGuest, setSelectedGuest] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+
+  function handleGuestSaved() {
+    setShowAddModal(false)
+    refresh()
+  }
 
   const isBusy = loading || isDebouncing
   const pageNumber = pageIndex + 1
 
   return (
     <div>
-      <header className="border-b border-stone-300 pb-6">
-        <h2 className="font-serif text-3xl text-stone-900">Guest</h2>
-        <p className="mt-2 text-stone-600">
-          Search and manage guests.
-        </p>
+      <header className="flex items-start justify-between gap-4 border-b border-stone-300 pb-6">
+        <div>
+          <h2 className="font-serif text-3xl text-stone-900">Guest</h2>
+          <p className="mt-2 text-stone-600">Search and manage guests.</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowAddModal(true)}
+          className="shrink-0 rounded-md bg-stone-800 px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-white transition hover:bg-stone-700"
+        >
+          + Add Guest
+        </button>
       </header>
 
       <div className="mt-6">
@@ -205,6 +392,9 @@ function GuestsPage() {
       <AnimatePresence>
         {selectedGuest && (
           <GuestDetailModal guest={selectedGuest} onClose={() => setSelectedGuest(null)} />
+        )}
+        {showAddModal && (
+          <AddGuestModal onClose={() => setShowAddModal(false)} onSaved={handleGuestSaved} />
         )}
       </AnimatePresence>
     </div>
