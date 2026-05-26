@@ -43,14 +43,9 @@ function GuestsPage() {
           type="search"
           value={searchInput}
           onChange={(event) => setSearchInput(event.target.value)}
-          placeholder="Search name or address (e.g. Yully Marthawati)…"
+          placeholder="Search by name or address…"
           className="mt-2 w-full max-w-md rounded-md border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200"
         />
-        <p className="mt-2 text-xs text-stone-500">
-          Splits your query by spaces — every word must match somewhere in the guest&apos;s name or
-          address ({DEBOUNCE_MS}ms debounce). e.g. <span className="italic">Marthawati</span>,{' '}
-          <span className="italic">SMKN 2</span>, <span className="italic">Probolinggo</span>.
-        </p>
       </div>
 
       {error ? (

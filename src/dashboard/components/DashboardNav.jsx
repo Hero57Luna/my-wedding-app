@@ -13,11 +13,17 @@ function linkClassName({ isActive }) {
     : `${base} text-stone-600 hover:bg-stone-200/80 hover:text-stone-900`
 }
 
-function DashboardNav() {
+function DashboardNav({ onNavigate }) {
   return (
     <nav aria-label="Dashboard" className="space-y-1">
       {navItems.map(({ to, label, end }) => (
-        <NavLink key={to} to={to} end={end} className={linkClassName}>
+        <NavLink
+          key={to}
+          to={to}
+          end={end}
+          className={linkClassName}
+          onClick={onNavigate}
+        >
           {label}
         </NavLink>
       ))}

@@ -1,20 +1,36 @@
+import { useState, useCallback } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import DashboardNav from './components/DashboardNav'
+import DashboardMobileMenu from './components/DashboardMobileMenu'
 
 function DashboardLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await logout()
     navigate('/login', { replace: true })
-  }
+  }, [logout, navigate])
+
+  const handleToggle = useCallback(() => setMenuOpen((v) => !v), [])
+  const handleClose = useCallback(() => setMenuOpen(false), [])
 
   return (
     <main className="min-h-screen bg-stone-100 text-stone-800">
-      <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-5 py-8 sm:flex-row sm:px-8 sm:py-10">
-        <aside className="w-full shrink-0 sm:w-52">
+      {/* Mobile-only: header bar + drawer */}
+      <DashboardMobileMenu
+        menuOpen={menuOpen}
+        onToggle={handleToggle}
+        onClose={handleClose}
+        user={user}
+        onLogout={handleLogout}
+      />
+
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-5 pt-20 pb-8 sm:flex-row sm:px-8 sm:py-10 sm:pt-10">
+        {/* Desktop sidebar */}
+        <aside className="hidden w-full shrink-0 sm:block sm:w-52">
           <p className="font-serif text-xs uppercase tracking-[0.28em] text-stone-500">
             Wedding Admin
           </p>
