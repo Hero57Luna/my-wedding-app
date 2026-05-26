@@ -141,15 +141,11 @@ export async function fetchSearchGuests(search, max = SEARCH_FETCH_MAX) {
     queryByPrefix('search_name', termLower, max),
   ])
 
-  let merged = mergeGuestDocs(...prefixGroups)
-  let filtered = filterByTokens(merged, tokens)
-
-  if (filtered.length === 0 || tokens.length > 1) {
-    merged = mergeGuestDocs(merged, await fetchAllGuestsBrief(max))
-    filtered = filterByTokens(merged, tokens)
-  }
-
-  return filtered.map(mapGuestDoc)
+  const merged = mergeGuestDocs(
+    ...prefixGroups,
+    await fetchAllGuestsBrief(max),
+  )
+  return filterByTokens(merged, tokens).map(mapGuestDoc)
 }
 
 async function fetchBrowsePage({ cursor, pageSize }) {
