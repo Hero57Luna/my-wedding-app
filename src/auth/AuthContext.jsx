@@ -10,12 +10,34 @@ import { auth } from '../firebase/config'
 import { AuthContext } from './authContext'
 import { getFirebaseAuthErrorMessage } from './firebaseErrors'
 
+const SESSION_DURATION_MS = 5 * 60 * 60 * 1000 // 24 hours
+const SESSION_LOGIN_AT_KEY = 'dashboard_login_at'
+
+function recordLoginTime() {
+  localStorage.setItem(SESSION_LOGIN_AT_KEY, String(Date.now()))
+}
+
+function clearLoginTime() {
+  localStorage.removeItem(SESSION_LOGIN_AT_KEY)
+}
+
+function isSessionExpired() {
+  const loginAt = localStorage.getItem(SESSION_LOGIN_AT_KEY)
+  if (!loginAt) return true
+  return Date.now() - Number(loginAt) > SESSION_DURATION_MS
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser && isSessionExpired()) {
+        signOut(auth)
+        clearLoginTime()
+        return
+      }
       setUser(firebaseUser)
       setIsLoading(false)
     })
@@ -26,6 +48,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
+      recordLoginTime()
       return { ok: true }
     } catch (error) {
       return { ok: false, error: getFirebaseAuthErrorMessage(error) }
@@ -36,6 +59,7 @@ export function AuthProvider({ children }) {
     try {
       const provider = new GoogleAuthProvider()
       await signInWithPopup(auth, provider)
+      recordLoginTime()
       return { ok: true }
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user') return { ok: false, error: null }
@@ -45,6 +69,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     await signOut(auth)
+    clearLoginTime()
   }, [])
 
   const value = useMemo(
