@@ -16,7 +16,6 @@ export const GUESTS_PAGE_SIZE = 50
 const SEARCH_FETCH_MAX = 100
 
 const guestsRef = collection(db, 'guests')
-const SEARCH_FIELDS = ['search_name', 'first_name', 'last_name', 'address']
 
 export function mapGuestDoc(docSnap) {
   const data = docSnap.data()
@@ -33,15 +32,8 @@ function tokenizeSearch(search) {
   return search.trim().split(/\s+/).filter(Boolean)
 }
 
-function guestDocHaystack(data) {
-  return SEARCH_FIELDS.map((field) => data[field] ?? '')
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
-}
-
 function matchesAllTokens(data, tokens) {
-  const haystack = guestDocHaystack(data)
+  const haystack = (data.search_name ?? '').toLowerCase()
   return tokens.every((token) => haystack.includes(token.toLowerCase()))
 }
 
@@ -72,21 +64,6 @@ async function queryByPrefix(field, term, max) {
   return snapshot.docs
 }
 
-async function queryFieldPrefixes(field, trimmed, termLower, max) {
-  const terms = new Set([termLower])
-  if (trimmed !== termLower) terms.add(trimmed)
-  const titled =
-    termLower.length > 0
-      ? termLower.charAt(0).toUpperCase() + termLower.slice(1)
-      : termLower
-  if (titled !== termLower) terms.add(titled)
-
-  const groups = await Promise.all(
-    [...terms].map((term) => queryByPrefix(field, term, max)),
-  )
-  return groups.flat()
-}
-
 function mergeGuestDocs(...docGroups) {
   const byId = new Map()
   for (const docs of docGroups) {
@@ -94,30 +71,26 @@ function mergeGuestDocs(...docGroups) {
       byId.set(docSnap.id, docSnap)
     }
   }
-  return [...byId.values()].sort((a, b) =>
-    (a.data().search_name ?? a.data().last_name ?? '').localeCompare(
-      b.data().search_name ?? b.data().last_name ?? '',
-    ),
-  )
-}
-
-async function fetchPrefixCandidatesForTerm(term, max) {
-  const trimmed = term.trim()
-  const termLower = trimmed.toLowerCase()
-
-  const groups = await Promise.all([
-    queryByPrefix('search_name', termLower, max),
-    ...SEARCH_FIELDS.filter((f) => f !== 'search_name').map((field) =>
-      queryFieldPrefixes(field, trimmed, termLower, max),
-    ),
-  ])
-
-  return mergeGuestDocs(...groups)
+  return [...byId.values()].sort((a, b) => {
+    const ad = a.data()
+    const bd = b.data()
+    return (
+      (ad.first_name ?? '').localeCompare(bd.first_name ?? '') ||
+      (ad.last_name ?? '').localeCompare(bd.last_name ?? '') ||
+      (ad.address ?? '').localeCompare(bd.address ?? '')
+    )
+  })
 }
 
 async function fetchAllGuestsBrief(max) {
   const snapshot = await getDocs(
-    query(guestsRef, orderBy('last_name'), orderBy('first_name'), limit(max)),
+    query(
+      guestsRef,
+      orderBy('first_name'),
+      orderBy('last_name'),
+      orderBy('address'),
+      limit(max),
+    ),
   )
   return snapshot.docs
 }
@@ -126,31 +99,30 @@ function filterByTokens(docs, tokens) {
   return docs.filter((docSnap) => matchesAllTokens(docSnap.data(), tokens))
 }
 
-/** Token search: every word must appear somewhere in name/address fields. */
+/** Token search: every word must appear somewhere in search_name (first_name + last_name + address). */
 export async function fetchSearchGuests(search, max = SEARCH_FETCH_MAX) {
   const tokens = tokenizeSearch(search)
   if (tokens.length === 0) return []
 
-  const trimmed = search.trim()
-  const termLower = trimmed.toLowerCase()
+  const termLower = search.trim().toLowerCase()
 
-  const prefixGroups = await Promise.all([
-    ...tokens.map((token) => fetchPrefixCandidatesForTerm(token, max)),
-    fetchPrefixCandidatesForTerm(trimmed, max),
-    queryFieldPrefixes('last_name', trimmed, termLower, max),
-    queryFieldPrefixes('address', trimmed, termLower, max),
+  const prefixDocs = await Promise.all([
     queryByPrefix('search_name', termLower, max),
+    ...tokens.map((token) =>
+      queryByPrefix('search_name', token.toLowerCase(), max),
+    ),
   ])
 
-  const merged = mergeGuestDocs(
-    ...prefixGroups,
-    await fetchAllGuestsBrief(max),
-  )
+  const merged = mergeGuestDocs(...prefixDocs, await fetchAllGuestsBrief(max))
   return filterByTokens(merged, tokens).map(mapGuestDoc)
 }
 
 async function fetchBrowsePage({ cursor, pageSize }) {
-  const constraints = [orderBy('last_name'), orderBy('first_name')]
+  const constraints = [
+    orderBy('first_name'),
+    orderBy('last_name'),
+    orderBy('address'),
+  ]
   if (cursor) constraints.push(startAfter(cursor))
   constraints.push(limit(pageSize))
 
@@ -190,7 +162,9 @@ export async function addGuest({ first_name, last_name, address, gender, present
   const cappedFirst = capitalizeWords(first_name)
   const cappedLast = capitalizeWords(last_name)
   const cappedAddress = capitalizeWords(address)
-  const search_name = `${cappedFirst} ${cappedLast}`.trim().toLowerCase()
+  const search_name = `${cappedFirst} ${cappedLast} ${cappedAddress}`
+    .trim()
+    .toLowerCase()
 
   await addDoc(guestsRef, {
     first_name: cappedFirst,
