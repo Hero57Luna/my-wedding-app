@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   limit,
@@ -25,6 +26,7 @@ export function mapGuestDoc(docSnap) {
     first_name: data.first_name ?? '',
     last_name: data.last_name ?? '',
     address: data.address ?? '',
+    gender: data.gender ?? 'male',
     present: data.present === true,
     vip: data.vip === true,
   }
@@ -183,7 +185,30 @@ function capitalizeWords(str) {
     .replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
-export async function addGuest({ first_name, last_name, address, gender, present }) {
+export async function updateGuest(guestId, { first_name, last_name, address, gender, present, vip }) {
+  const cappedFirst = capitalizeWords(first_name)
+  const cappedLast = capitalizeWords(last_name)
+  const cappedAddress = capitalizeWords(address)
+  const search_name = `${cappedFirst} ${cappedLast} ${cappedAddress}`
+    .trim()
+    .toLowerCase()
+
+  await updateDoc(doc(db, 'guests', guestId), {
+    first_name: cappedFirst,
+    last_name: cappedLast,
+    address: cappedAddress,
+    gender,
+    present,
+    vip,
+    search_name,
+  })
+}
+
+export async function deleteGuest(guestId) {
+  await deleteDoc(doc(db, 'guests', guestId))
+}
+
+export async function addGuest({ first_name, last_name, address, gender, present, vip = false }) {
   const cappedFirst = capitalizeWords(first_name)
   const cappedLast = capitalizeWords(last_name)
   const cappedAddress = capitalizeWords(address)
@@ -197,6 +222,7 @@ export async function addGuest({ first_name, last_name, address, gender, present
     address: cappedAddress,
     gender,
     present,
+    vip,
     search_name,
   })
 }

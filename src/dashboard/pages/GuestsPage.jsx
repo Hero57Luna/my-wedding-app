@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useGuestList } from '../hooks/useGuestList'
-import { addGuest, GUESTS_PAGE_SIZE } from '../services/guests'
+import { addGuest, updateGuest, deleteGuest, GUESTS_PAGE_SIZE } from '../services/guests'
 
 const DEBOUNCE_MS = 300
 
@@ -65,7 +65,7 @@ function GuestDetailModal({ guest, onClose }) {
   )
 }
 
-const EMPTY_FORM = { first_name: '', last_name: '', address: '', gender: 'male', present: 'true' }
+const EMPTY_FORM = { first_name: '', last_name: '', address: '', gender: 'male', present: 'true', vip: 'false' }
 
 function AddGuestModal({ onClose, onSaved }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -88,6 +88,7 @@ function AddGuestModal({ onClose, onSaved }) {
         address: form.address,
         gender: form.gender,
         present: form.present === 'true',
+        vip: form.vip === 'true',
       })
       onSaved()
     } catch (err) {
@@ -215,6 +216,21 @@ function AddGuestModal({ onClose, onSaved }) {
             </div>
           </div>
 
+          <div>
+            <label htmlFor="ag-vip" className={labelClass}>VIP</label>
+            <select
+              id="ag-vip"
+              name="vip"
+              value={form.vip}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+
           <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
             <button
               type="button"
@@ -238,6 +254,289 @@ function AddGuestModal({ onClose, onSaved }) {
   )
 }
 
+function EditGuestModal({ guest, onClose, onSaved }) {
+  const [form, setForm] = useState({
+    first_name: guest.first_name,
+    last_name: guest.last_name,
+    address: guest.address,
+    gender: guest.gender ?? 'male',
+    present: guest.present ? 'true' : 'false',
+    vip: guest.vip ? 'true' : 'false',
+  })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
+
+  function handleChange(e) {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setSaving(true)
+    setError(null)
+    try {
+      await updateGuest(guest.id, {
+        first_name: form.first_name,
+        last_name: form.last_name,
+        address: form.address,
+        gender: form.gender,
+        present: form.present === 'true',
+        vip: form.vip === 'true',
+      })
+      onSaved()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update guest')
+      setSaving(false)
+    }
+  }
+
+  const inputClass =
+    'mt-1.5 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200 disabled:opacity-50'
+  const labelClass = 'block font-serif text-xs uppercase tracking-[0.12em] text-stone-600'
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="edit-guest-modal-title"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.97, y: 6 }}
+        transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
+        className="w-full max-w-md rounded-xl border border-stone-200 bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+          <h3 id="edit-guest-modal-title" className="font-serif text-lg text-stone-900">
+            Edit Guest
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="rounded-md p-1 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {error ? (
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+              {error}
+            </p>
+          ) : null}
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="eg-first-name" className={labelClass}>First Name</label>
+              <input
+                id="eg-first-name"
+                name="first_name"
+                type="text"
+                required
+                value={form.first_name}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="eg-last-name" className={labelClass}>Last Name</label>
+              <input
+                id="eg-last-name"
+                name="last_name"
+                type="text"
+                value={form.last_name}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="eg-address" className={labelClass}>Address</label>
+            <input
+              id="eg-address"
+              name="address"
+              type="text"
+              value={form.address}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="eg-gender" className={labelClass}>Gender</label>
+              <select
+                id="eg-gender"
+                name="gender"
+                value={form.gender}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="eg-present" className={labelClass}>Present</label>
+              <select
+                id="eg-present"
+                name="present"
+                value={form.present}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              >
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="eg-vip" className={labelClass}>VIP</label>
+            <select
+              id="eg-vip"
+              name="vip"
+              value={form.vip}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={saving}
+              className="rounded-md border border-stone-300 bg-white px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-stone-700 transition hover:bg-stone-50 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-md bg-stone-800 px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-white transition hover:bg-stone-700 disabled:opacity-50"
+            >
+              {saving ? 'Saving…' : 'Save Changes'}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function DeleteConfirmModal({ guest, onClose, onDeleted }) {
+  const [deleting, setDeleting] = useState(false)
+  const [error, setError] = useState(null)
+
+  async function handleDelete() {
+    setDeleting(true)
+    setError(null)
+    try {
+      await deleteGuest(guest.id)
+      onDeleted()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete guest')
+      setDeleting(false)
+    }
+  }
+
+  const fullName = [guest.first_name, guest.last_name].filter(Boolean).join(' ')
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-guest-modal-title"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, y: 8 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.97, y: 6 }}
+        transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
+        className="w-full max-w-sm rounded-xl border border-stone-200 bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+          <h3 id="delete-guest-modal-title" className="font-serif text-lg text-stone-900">
+            Remove Guest
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={deleting}
+            aria-label="Close"
+            className="rounded-md p-1 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 disabled:opacity-50"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="px-6 py-5 space-y-4">
+          {error ? (
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+              {error}
+            </p>
+          ) : null}
+          <p className="text-sm text-stone-700">
+            Are you sure you want to remove{' '}
+            <span className="font-semibold text-stone-900">{fullName}</span>? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={deleting}
+              className="rounded-md border border-stone-300 bg-white px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-stone-700 transition hover:bg-stone-50 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={deleting}
+              className="rounded-md bg-red-600 px-4 py-2 font-serif text-xs uppercase tracking-[0.15em] text-white transition hover:bg-red-700 disabled:opacity-50"
+            >
+              {deleting ? 'Removing…' : 'Remove'}
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 function GuestsPage() {
   const {
     searchInput,
@@ -256,10 +555,22 @@ function GuestsPage() {
   } = useGuestList()
 
   const [selectedGuest, setSelectedGuest] = useState(null)
+  const [editGuest, setEditGuest] = useState(null)
+  const [deleteGuest, setDeleteGuest] = useState(null)
   const [showAddModal, setShowAddModal] = useState(false)
 
   function handleGuestSaved() {
     setShowAddModal(false)
+    refresh()
+  }
+
+  function handleGuestUpdated() {
+    setEditGuest(null)
+    refresh()
+  }
+
+  function handleGuestDeleted() {
+    setDeleteGuest(null)
     refresh()
   }
 
@@ -355,13 +666,29 @@ function GuestsPage() {
                     {guest.vip ? 'Yes' : '-'}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedGuest(guest)}
-                      className="rounded border border-stone-300 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
-                    >
-                      Details
-                    </button>
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setEditGuest(guest)}
+                        className="rounded border border-stone-300 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedGuest(guest)}
+                        className="rounded border border-stone-300 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+                      >
+                        Details
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDeleteGuest(guest)}
+                        className="rounded border border-red-200 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-red-600 transition hover:bg-red-50 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -397,6 +724,12 @@ function GuestsPage() {
       <AnimatePresence>
         {selectedGuest && (
           <GuestDetailModal guest={selectedGuest} onClose={() => setSelectedGuest(null)} />
+        )}
+        {editGuest && (
+          <EditGuestModal guest={editGuest} onClose={() => setEditGuest(null)} onSaved={handleGuestUpdated} />
+        )}
+        {deleteGuest && (
+          <DeleteConfirmModal guest={deleteGuest} onClose={() => setDeleteGuest(null)} onDeleted={handleGuestDeleted} />
         )}
         {showAddModal && (
           <AddGuestModal onClose={() => setShowAddModal(false)} onSaved={handleGuestSaved} />

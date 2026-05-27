@@ -38,7 +38,7 @@ function DashboardLayout() {
         onLogout={handleLogout}
       />
 
-      <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-5 pt-20 pb-8 sm:flex-row sm:px-8 sm:py-10 sm:pt-10">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-5 pt-20 pb-8 sm:flex-row sm:px-8 sm:py-10 sm:pt-10">
         {/* Desktop sidebar */}
         <aside className="hidden w-full shrink-0 sm:block sm:w-52">
           <p className="font-serif text-xs uppercase tracking-[0.28em] text-stone-500">
