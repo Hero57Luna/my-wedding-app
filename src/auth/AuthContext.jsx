@@ -36,6 +36,8 @@ export function AuthProvider({ children }) {
       if (firebaseUser && isSessionExpired()) {
         signOut(auth)
         clearLoginTime()
+        setUser(null)
+        setIsLoading(false)
         return
       }
       setUser(firebaseUser)
@@ -47,10 +49,11 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
       recordLoginTime()
+      await signInWithEmailAndPassword(auth, email, password)
       return { ok: true }
     } catch (error) {
+      clearLoginTime()
       return { ok: false, error: getFirebaseAuthErrorMessage(error) }
     }
   }, [])
@@ -58,10 +61,11 @@ export function AuthProvider({ children }) {
   const loginWithGoogle = useCallback(async () => {
     try {
       const provider = new GoogleAuthProvider()
-      await signInWithPopup(auth, provider)
       recordLoginTime()
+      await signInWithPopup(auth, provider)
       return { ok: true }
     } catch (error) {
+      clearLoginTime()
       if (error.code === 'auth/popup-closed-by-user') return { ok: false, error: null }
       return { ok: false, error: getFirebaseAuthErrorMessage(error) }
     }
