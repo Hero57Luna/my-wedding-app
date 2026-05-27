@@ -7,8 +7,7 @@ const DEBOUNCE_MS = 300
 
 function GuestDetailModal({ guest, onClose }) {
   const fields = [
-    { label: 'First Name', value: guest.first_name || '—' },
-    { label: 'Last Name', value: guest.last_name || '—' },
+    { label: 'Name', value: guest.name || '—' },
     { label: 'Address', value: guest.address || '—' },
     { label: 'Present', value: guest.present ? 'Yes' : 'No' },
     { label: 'VIP', value: guest.vip ? 'Yes' : '-' },
@@ -65,7 +64,7 @@ function GuestDetailModal({ guest, onClose }) {
   )
 }
 
-const EMPTY_FORM = { first_name: '', last_name: '', address: '', gender: 'male', present: 'true', vip: 'false' }
+const EMPTY_FORM = { name: '', address: '', gender: 'male', present: 'true', vip: 'false' }
 
 function AddGuestModal({ onClose, onSaved }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -83,8 +82,7 @@ function AddGuestModal({ onClose, onSaved }) {
     setError(null)
     try {
       await addGuest({
-        first_name: form.first_name,
-        last_name: form.last_name,
+        name: form.name,
         address: form.address,
         gender: form.gender,
         present: form.present === 'true',
@@ -144,32 +142,18 @@ function AddGuestModal({ onClose, onSaved }) {
             </p>
           ) : null}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="ag-first-name" className={labelClass}>First Name</label>
-              <input
-                id="ag-first-name"
-                name="first_name"
-                type="text"
-                required
-                value={form.first_name}
-                onChange={handleChange}
-                disabled={saving}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label htmlFor="ag-last-name" className={labelClass}>Last Name</label>
-              <input
-                id="ag-last-name"
-                name="last_name"
-                type="text"
-                value={form.last_name}
-                onChange={handleChange}
-                disabled={saving}
-                className={inputClass}
-              />
-            </div>
+          <div>
+            <label htmlFor="ag-name" className={labelClass}>Name</label>
+            <input
+              id="ag-name"
+              name="name"
+              type="text"
+              required
+              value={form.name}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            />
           </div>
 
           <div>
@@ -256,8 +240,7 @@ function AddGuestModal({ onClose, onSaved }) {
 
 function EditGuestModal({ guest, onClose, onSaved }) {
   const [form, setForm] = useState({
-    first_name: guest.first_name,
-    last_name: guest.last_name,
+    name: guest.name,
     address: guest.address,
     gender: guest.gender ?? 'male',
     present: guest.present ? 'true' : 'false',
@@ -277,8 +260,7 @@ function EditGuestModal({ guest, onClose, onSaved }) {
     setError(null)
     try {
       await updateGuest(guest.id, {
-        first_name: form.first_name,
-        last_name: form.last_name,
+        name: form.name,
         address: form.address,
         gender: form.gender,
         present: form.present === 'true',
@@ -338,32 +320,18 @@ function EditGuestModal({ guest, onClose, onSaved }) {
             </p>
           ) : null}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="eg-first-name" className={labelClass}>First Name</label>
-              <input
-                id="eg-first-name"
-                name="first_name"
-                type="text"
-                required
-                value={form.first_name}
-                onChange={handleChange}
-                disabled={saving}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label htmlFor="eg-last-name" className={labelClass}>Last Name</label>
-              <input
-                id="eg-last-name"
-                name="last_name"
-                type="text"
-                value={form.last_name}
-                onChange={handleChange}
-                disabled={saving}
-                className={inputClass}
-              />
-            </div>
+          <div>
+            <label htmlFor="eg-name" className={labelClass}>Name</label>
+            <input
+              id="eg-name"
+              name="name"
+              type="text"
+              required
+              value={form.name}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            />
           </div>
 
           <div>
@@ -464,8 +432,6 @@ function DeleteConfirmModal({ guest, onClose, onDeleted }) {
     }
   }
 
-  const fullName = [guest.first_name, guest.last_name].filter(Boolean).join(' ')
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -511,7 +477,7 @@ function DeleteConfirmModal({ guest, onClose, onDeleted }) {
           ) : null}
           <p className="text-sm text-stone-700">
             Are you sure you want to remove{' '}
-            <span className="font-semibold text-stone-900">{fullName}</span>? This action cannot be undone.
+            <span className="font-semibold text-stone-900">{guest.name}</span>? This action cannot be undone.
           </p>
           <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
             <button
@@ -623,8 +589,7 @@ function GuestsPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 font-serif text-xs uppercase tracking-[0.12em] text-stone-600">
             <tr>
-              <th className="px-4 py-3">First Name</th>
-              <th className="px-4 py-3">Last Name</th>
+              <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Address</th>
               <th className="px-4 py-3 text-center">Present</th>
               <th className="px-4 py-3 text-center">VIP</th>
@@ -634,28 +599,27 @@ function GuestsPage() {
           <tbody className="divide-y divide-stone-100" aria-busy={isBusy}>
             {isBusy ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
                   Loading guests…
                 </td>
               </tr>
             ) : guests.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
                   No guests found.
                 </td>
               </tr>
             ) : (
               guests.map((guest) => (
                 <tr key={guest.id} className="text-stone-800">
-                  <td className="max-w-[10rem] truncate px-4 py-3" title={guest.first_name}>{guest.first_name}</td>
-                  <td className="max-w-[10rem] truncate px-4 py-3" title={guest.last_name}>{guest.last_name}</td>
+                  <td className="max-w-[16rem] truncate px-4 py-3" title={guest.name}>{guest.name}</td>
                   <td className="max-w-[16rem] truncate px-4 py-3" title={guest.address || '—'}>{guest.address || '—'}</td>
                   <td className="px-4 py-3 text-center">
                     <input
                       type="checkbox"
                       checked={guest.present}
                       disabled={updatingIds.has(guest.id)}
-                      aria-label={`Mark ${guest.first_name} ${guest.last_name} as present`}
+                      aria-label={`Mark ${guest.name} as present`}
                       onChange={(event) =>
                         togglePresent(guest.id, event.target.checked)
                       }

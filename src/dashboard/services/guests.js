@@ -23,8 +23,7 @@ export function mapGuestDoc(docSnap) {
   const data = docSnap.data()
   return {
     id: docSnap.id,
-    first_name: data.first_name ?? '',
-    last_name: data.last_name ?? '',
+    name: data.name ?? '',
     address: data.address ?? '',
     gender: data.gender ?? 'male',
     present: data.present === true,
@@ -79,8 +78,7 @@ function mergeGuestDocs(...docGroups) {
     const ad = a.data()
     const bd = b.data()
     return (
-      (ad.first_name ?? '').localeCompare(bd.first_name ?? '') ||
-      (ad.last_name ?? '').localeCompare(bd.last_name ?? '') ||
+      (ad.name ?? '').localeCompare(bd.name ?? '') ||
       (ad.address ?? '').localeCompare(bd.address ?? '')
     )
   })
@@ -90,8 +88,7 @@ async function fetchAllGuestsBrief(max) {
   const snapshot = await getDocs(
     query(
       guestsRef,
-      orderBy('first_name'),
-      orderBy('last_name'),
+      orderBy('name'),
       orderBy('address'),
       limit(max),
     ),
@@ -123,8 +120,7 @@ export async function fetchSearchGuests(search, max = SEARCH_FETCH_MAX) {
 
 async function fetchBrowsePage({ cursor, pageSize }) {
   const constraints = [
-    orderBy('first_name'),
-    orderBy('last_name'),
+    orderBy('name'),
     orderBy('address'),
   ]
   if (cursor) constraints.push(startAfter(cursor))
@@ -153,8 +149,7 @@ export async function fetchGuestsPage({
 
 export function subscribeBrowsePage({ cursor, pageSize = GUESTS_PAGE_SIZE }, onData, onError) {
   const constraints = [
-    orderBy('first_name'),
-    orderBy('last_name'),
+    orderBy('name'),
     orderBy('address'),
   ]
   if (cursor) constraints.push(startAfter(cursor))
@@ -185,17 +180,13 @@ function capitalizeWords(str) {
     .replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
-export async function updateGuest(guestId, { first_name, last_name, address, gender, present, vip }) {
-  const cappedFirst = capitalizeWords(first_name)
-  const cappedLast = capitalizeWords(last_name)
+export async function updateGuest(guestId, { name, address, gender, present, vip }) {
+  const cappedName = capitalizeWords(name)
   const cappedAddress = capitalizeWords(address)
-  const search_name = `${cappedFirst} ${cappedLast} ${cappedAddress}`
-    .trim()
-    .toLowerCase()
+  const search_name = `${cappedName} ${cappedAddress}`.trim().toLowerCase()
 
   await updateDoc(doc(db, 'guests', guestId), {
-    first_name: cappedFirst,
-    last_name: cappedLast,
+    name: cappedName,
     address: cappedAddress,
     gender,
     present,
@@ -208,17 +199,13 @@ export async function deleteGuest(guestId) {
   await deleteDoc(doc(db, 'guests', guestId))
 }
 
-export async function addGuest({ first_name, last_name, address, gender, present, vip = false }) {
-  const cappedFirst = capitalizeWords(first_name)
-  const cappedLast = capitalizeWords(last_name)
+export async function addGuest({ name, address, gender, present, vip = false }) {
+  const cappedName = capitalizeWords(name)
   const cappedAddress = capitalizeWords(address)
-  const search_name = `${cappedFirst} ${cappedLast} ${cappedAddress}`
-    .trim()
-    .toLowerCase()
+  const search_name = `${cappedName} ${cappedAddress}`.trim().toLowerCase()
 
   await addDoc(guestsRef, {
-    first_name: cappedFirst,
-    last_name: cappedLast,
+    name: cappedName,
     address: cappedAddress,
     gender,
     present,
