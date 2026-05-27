@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  fetchGuestsPage,
   fetchSearchGuests,
   GUESTS_PAGE_SIZE,
   setGuestPresent,
+  subscribeBrowsePage,
 } from '../services/guests'
 
 const DEBOUNCE_MS = 300
@@ -33,52 +33,52 @@ export function useGuestList() {
   }, [searchInput])
 
   useEffect(() => {
-    let cancelled = false
+    setLoading(true)
+    setError(null)
 
-    async function loadPage() {
-      setLoading(true)
-      setError(null)
+    if (debouncedSearch) {
+      let cancelled = false
 
-      try {
-        if (debouncedSearch) {
+      async function loadSearch() {
+        try {
           if (pageIndex === 0 || searchResultsRef.current.length === 0) {
             searchResultsRef.current = await fetchSearchGuests(debouncedSearch)
           }
-
           if (cancelled) return
-
           const start = pageIndex * GUESTS_PAGE_SIZE
-          const page = searchResultsRef.current.slice(
-            start,
-            start + GUESTS_PAGE_SIZE,
-          )
+          const page = searchResultsRef.current.slice(start, start + GUESTS_PAGE_SIZE)
           setGuests(page)
           setHasNext(start + GUESTS_PAGE_SIZE < searchResultsRef.current.length)
-          return
+        } catch (err) {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : 'Failed to load guests')
+          }
+        } finally {
+          if (!cancelled) setLoading(false)
         }
+      }
 
-        const cursor =
-          pageIndex === 0 ? null : pageCursorsRef.current[pageIndex - 1]
-        const result = await fetchGuestsPage({ cursor })
+      loadSearch()
+      return () => { cancelled = true }
+    }
 
-        if (cancelled) return
+    const cursor = pageIndex === 0 ? null : pageCursorsRef.current[pageIndex - 1]
 
+    const unsubscribe = subscribeBrowsePage(
+      { cursor },
+      (result) => {
         setGuests(result.guests)
         setHasNext(result.hasMore)
         pageCursorsRef.current[pageIndex] = result.lastDoc
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Failed to load guests')
-        }
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
+        setLoading(false)
+      },
+      (err) => {
+        setError(err instanceof Error ? err.message : 'Failed to load guests')
+        setLoading(false)
+      },
+    )
 
-    loadPage()
-    return () => {
-      cancelled = true
-    }
+    return unsubscribe
   }, [debouncedSearch, pageIndex, refreshKey])
 
   const isDebouncing = searchInput.trim() !== debouncedSearch

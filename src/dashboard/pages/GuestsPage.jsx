@@ -11,6 +11,7 @@ function GuestDetailModal({ guest, onClose }) {
     { label: 'Last Name', value: guest.last_name || '—' },
     { label: 'Address', value: guest.address || '—' },
     { label: 'Present', value: guest.present ? 'Yes' : 'No' },
+    { label: 'VIP', value: guest.vip ? 'Yes' : '-' },
   ]
 
   return (
@@ -315,19 +316,20 @@ function GuestsPage() {
               <th className="px-4 py-3">Last Name</th>
               <th className="px-4 py-3">Address</th>
               <th className="px-4 py-3 text-center">Present</th>
+              <th className="px-4 py-3 text-center">VIP</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100" aria-busy={isBusy}>
             {isBusy ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-stone-500">
                   Loading guests…
                 </td>
               </tr>
             ) : guests.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-stone-500">
                   No guests found.
                 </td>
               </tr>
@@ -348,6 +350,9 @@ function GuestsPage() {
                       }
                       className="h-4 w-4 rounded border-stone-300 text-stone-800 focus:ring-stone-400 disabled:opacity-50"
                     />
+                  </td>
+                  <td className="px-4 py-3 text-center text-stone-700">
+                    {guest.vip ? 'Yes' : '-'}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <button

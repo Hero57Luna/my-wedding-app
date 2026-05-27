@@ -4,6 +4,7 @@ import {
   doc,
   getDocs,
   limit,
+  onSnapshot,
   orderBy,
   query,
   startAfter,
@@ -25,6 +26,7 @@ export function mapGuestDoc(docSnap) {
     last_name: data.last_name ?? '',
     address: data.address ?? '',
     present: data.present === true,
+    vip: data.vip === true,
   }
 }
 
@@ -145,6 +147,29 @@ export async function fetchGuestsPage({
     throw new Error('Use fetchSearchGuests for search mode')
   }
   return fetchBrowsePage({ cursor, pageSize })
+}
+
+export function subscribeBrowsePage({ cursor, pageSize = GUESTS_PAGE_SIZE }, onData, onError) {
+  const constraints = [
+    orderBy('first_name'),
+    orderBy('last_name'),
+    orderBy('address'),
+  ]
+  if (cursor) constraints.push(startAfter(cursor))
+  constraints.push(limit(pageSize))
+
+  return onSnapshot(
+    query(guestsRef, ...constraints),
+    (snapshot) => {
+      const docs = snapshot.docs
+      onData({
+        guests: docs.map(mapGuestDoc),
+        lastDoc: docs.at(-1) ?? null,
+        hasMore: docs.length === pageSize,
+      })
+    },
+    onError,
+  )
 }
 
 export async function setGuestPresent(guestId, present) {
