@@ -8,6 +8,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  serverTimestamp,
   startAfter,
   updateDoc,
   where,
@@ -28,6 +29,7 @@ export function mapGuestDoc(docSnap) {
     gender: data.gender ?? 'male',
     present: data.present === true,
     vip: data.vip === true,
+    arrival: data.arrival?.toDate() ?? null,
   }
 }
 
@@ -170,7 +172,9 @@ export function subscribeBrowsePage({ cursor, pageSize = GUESTS_PAGE_SIZE }, onD
 }
 
 export async function setGuestPresent(guestId, present) {
-  await updateDoc(doc(db, 'guests', guestId), { present })
+  const payload = { present }
+  if (present) payload.arrival = serverTimestamp()
+  await updateDoc(doc(db, 'guests', guestId), payload)
 }
 
 function capitalizeWords(str) {

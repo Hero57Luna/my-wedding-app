@@ -11,6 +11,7 @@ function GuestDetailModal({ guest, onClose }) {
     { label: 'Address', value: guest.address || '—' },
     { label: 'Present', value: guest.present ? 'Yes' : 'No' },
     { label: 'VIP', value: guest.vip ? 'Yes' : '-' },
+    { label: 'Arrival', value: guest.arrival ? guest.arrival.toLocaleString() : '-' },
   ]
 
   return (
