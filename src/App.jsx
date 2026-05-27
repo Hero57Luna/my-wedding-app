@@ -4,6 +4,7 @@ import ProtectedRoute from './auth/ProtectedRoute'
 import DashboardApp from './dashboard/DashboardApp'
 import LoginPage from './dashboard/LoginPage'
 import InvitationApp from './invitation/InvitationApp'
+import FirestoreTestPage from './FirestoreTestPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<InvitationApp />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/test" element={<FirestoreTestPage />} />
           <Route
             path="/dashboard/*"
             element={
