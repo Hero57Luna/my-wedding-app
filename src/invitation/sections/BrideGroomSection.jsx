@@ -8,6 +8,7 @@ const couples = [
     icon: 'fa-user-tie',
     image: GROOM_IMAGE,
     imageAlt: 'Rahadian Bagaskara Adikusuma',
+    instagram: 'https://www.instagram.com/adikusuma_bagas?igsh=eHR5cjM3eDY5bms%3D&utm_source=qr',
   },
   {
     name: 'Dhelanda La Nina Dwipa Tiara Andiyani',
@@ -15,6 +16,7 @@ const couples = [
     icon: 'fa-heart',
     image: BRIDE_IMAGE,
     imageAlt: 'Dhelanda La Nina Dwipa Tiara Andiyani',
+    instagram: 'https://www.instagram.com/dhelandiyani?igsh=MXduc3ppZnF1aXBuaA==',
   },
 ]
 
@@ -22,7 +24,7 @@ function BrideGroomSection() {
   return (
     <AnimatedSection page={2}>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-chomsky text-2xl text-stone-900">Bride & Groom</h3>
+        <h3 className="font-chomsky text-4xl text-stone-900">Bride & Groom</h3>
         <i className="fa-solid fa-ring text-lg text-stone-500" />
       </div>
 
@@ -44,6 +46,15 @@ function BrideGroomSection() {
             <p className="mt-3 text-sm leading-relaxed text-stone-600">
               {person.description}
             </p>
+            <a
+              href={person.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center gap-2 text-xs font-bold tracking-widest text-stone-500 transition-colors hover:text-stone-900"
+            >
+              <i className="fa-brands fa-instagram text-base" />
+              INSTAGRAM
+            </a>
           </article>
         ))}
       </div>

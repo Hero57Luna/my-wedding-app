@@ -2,38 +2,38 @@ import AnimatedSection from '../components/AnimatedSection'
 
 const milestones = [
   {
-    date: '2019',
-    title: 'How we met',
-    text: 'We crossed paths at university and quickly found we could talk for hours about nothing and everything.',
+    date: '2012',
+    title: 'How We Met',
+    text: 'Our story began in junior high school, where a simple friendship grew through endless conversations, shared laughter, and countless memories.'
+  },
+  {
+    date: '2017',
+    title: 'A New Chapter',
+    text: 'For the first time, we left our hometown together to pursue higher education. Stepping into an unfamiliar world felt less daunting because we had each other by our side.'
   },
   {
     date: '2020',
-    title: 'First adventure',
-    text: 'Our first trip together taught us patience, laughter, and that we actually enjoy getting lost—as long as we are together.',
-  },
-  {
-    date: '2022',
-    title: 'Growing closer',
-    text: 'Through careers, distance, and ordinary weekdays, we chose each other again and again.',
+    title: 'Through Every Storm',
+    text: 'Life tested us in ways we never expected. Despite the challenges, uncertainties, and distance between dreams and reality, we chose to stay, grow, and fight for our future together.'
   },
   {
     date: '2025',
-    title: 'The question',
-    text: 'Under a sky full of stars, one of us asked—and the other said yes without hesitation.',
+    title: 'Building Our Future',
+    text: 'What once felt like distant dreams began to take shape. Together, we made plans for the life we had always imagined, one filled with love, purpose, and a shared future.'
   },
   {
     date: '2026',
-    title: 'Forever begins',
-    text: 'On 6 September 2026 we invite you to witness the day we become husband and wife.',
+    title: 'Forever Begins',
+    text: 'This is the year we choose each other for a lifetime. On 6 September 2026, surrounded by our loved ones, we begin our greatest adventure as husband and wife.'
   },
 ]
 
 function OurJourneySection() {
   return (
     <AnimatedSection page={4}>
-      <h3 className="font-chomsky text-2xl text-stone-900">Our Journey</h3>
+      <h3 className="font-chomsky text-4xl text-stone-900">Our Journey</h3>
       <p className="mt-2 text-sm leading-relaxed text-stone-600">
-        A short story of how two lives became one path—leading to this celebration.
+        A short story of how two lives became one path, leading to this celebration.
       </p>
 
       <div className="relative mt-6 border-l border-stone-300 pl-6">
