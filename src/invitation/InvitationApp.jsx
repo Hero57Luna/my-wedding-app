@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import AudioToggleButton from './components/AudioToggleButton'
 import CoverPage from './components/CoverPage'
+import WeddingGiftView from './components/WeddingGiftView'
 import { MAIN_IMAGE, SONG_URL } from './assets'
 import BrideSection from './sections/BrideSection'
-import ClosingSection from './sections/ClosingSection'
 import EventDetailsSection from './sections/EventDetailsSection'
 import GallerySection from './sections/GallerySection'
 import GroomSection from './sections/GroomSection'
 import OurJourneySection from './sections/OurJourneySection'
 import OpeningSection from './sections/OpeningSection'
+import WeddingGiftSection from './sections/WeddingGiftSection'
 
 const FADE_MS = 700
 
@@ -19,6 +20,7 @@ function InvitationApp() {
   const [isMuted, setIsMuted] = useState(false)
   const [coverRemoved, setCoverRemoved] = useState(false)
   const [fadeCoverOut, setFadeCoverOut] = useState(false)
+  const [giftOpen, setGiftOpen] = useState(false)
 
   useEffect(() => {
     const audio = audioRef.current
@@ -123,7 +125,7 @@ function InvitationApp() {
             <EventDetailsSection />
             <OurJourneySection />
             <GallerySection />
-            <ClosingSection />
+            <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} />
           </div>
         </section>
       </div>
@@ -143,6 +145,8 @@ function InvitationApp() {
       {invitationActive && (
         <AudioToggleButton isMuted={isMuted} onToggle={handleToggleMute} />
       )}
+
+      {giftOpen && <WeddingGiftView onClose={() => setGiftOpen(false)} />}
     </main>
   )
 }

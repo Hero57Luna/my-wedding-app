@@ -29,3 +29,26 @@ export const GALLERY_IMAGES = [
   'https://weddingofbagasdhela.com/gallery5.jpeg',
   'https://weddingofbagasdhela.com/gallery6.jpeg',
 ]
+
+// TODO: replace with the real bank details before publishing the invitation.
+export const GIFT_ACCOUNTS = {
+  groom: {
+    name: 'Bagas',
+    bankName: 'BCA',
+    accountNumber: '1234-5678-90',
+    accountHolder: 'Rahadian Bagaskara Adikusuma',
+  },
+  bride: {
+    name: 'Dhela',
+    bankName: 'BCA',
+    accountNumber: '0987-6543-21',
+    accountHolder: 'Dhelanda La Nina Dwipa Tiara Andiyani',
+  },
+}
+
+// TODO: replace with the real shipping address before publishing the invitation.
+export const GIFT_SHIPPING_ADDRESS = {
+  recipient: 'Nama Penerima',
+  address:
+    'Blossom Residence No 20 Jl. Angsana, Pademangan Timur, Kec. Pademangan, Kota Jkt Utara, DKI Jakarta 14410',
+}

@@ -2,10 +2,28 @@ import { GALLERY_IMAGES } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
-function ClosingSection() {
+function WeddingGiftSection({ onOpenGift }) {
   return (
     <AnimatedSection className="pb-4" page={7}>
-      <SectionLabel label="Best Wishes" />
+      <h3 className="font-chomsky text-3xl leading-none text-stone-900">Wedding Gift</h3>
+
+      <p className="mt-4 text-sm leading-relaxed text-stone-600">
+        Your presence is a present in itself. But if you do wish to give us
+        something else, please tap the button down below for further
+        information:
+      </p>
+
+      <button
+        type="button"
+        onClick={onOpenGift}
+        className="mt-6 font-serif text-xs font-bold uppercase tracking-widest text-stone-800 underline underline-offset-4 transition-colors hover:text-stone-500"
+      >
+        Wedding Gift
+      </button>
+
+      <div className="mt-10">
+        <SectionLabel label="Best Wishes" />
+      </div>
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
         <img
@@ -29,4 +47,4 @@ function ClosingSection() {
   )
 }
 
-export default ClosingSection
+export default WeddingGiftSection
