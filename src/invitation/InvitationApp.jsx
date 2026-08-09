@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import AudioToggleButton from './components/AudioToggleButton'
 import CoverPage from './components/CoverPage'
 import { MAIN_IMAGE, SONG_URL } from './assets'
-import BrideGroomSection from './sections/BrideGroomSection'
+import BrideSection from './sections/BrideSection'
 import ClosingSection from './sections/ClosingSection'
 import EventDetailsSection from './sections/EventDetailsSection'
 import GallerySection from './sections/GallerySection'
+import GroomSection from './sections/GroomSection'
 import OurJourneySection from './sections/OurJourneySection'
 import OpeningSection from './sections/OpeningSection'
 
@@ -85,7 +86,7 @@ function InvitationApp() {
   const invitationActive = fadeCoverOut || coverRemoved
 
   return (
-    <main className="min-h-screen bg-stone-100 text-stone-800">
+    <main className="min-h-screen bg-white text-stone-800">
       <audio ref={audioRef} src={SONG_URL} preload="auto" />
 
       <div
@@ -115,9 +116,10 @@ function InvitationApp() {
         </aside>
 
         <section className="w-full lg:h-screen lg:w-2/5 lg:overflow-y-auto">
-          <div className="space-y-8 border-x border-stone-300/80 bg-stone-50 p-5 sm:p-8 lg:p-10">
+          <div className="space-y-8 border-x border-stone-300/80 bg-white p-5 sm:p-8 lg:p-10">
             <OpeningSection />
-            <BrideGroomSection />
+            <GroomSection />
+            <BrideSection />
             <EventDetailsSection />
             <OurJourneySection />
             <GallerySection />
@@ -128,7 +130,7 @@ function InvitationApp() {
 
       {!coverRemoved && (
         <div
-          className={`fixed inset-0 z-50 overflow-hidden bg-stone-100 transition-opacity ease-in-out ${
+          className={`fixed inset-0 z-50 overflow-hidden bg-white transition-opacity ease-in-out ${
             fadeCoverOut ? 'pointer-events-none opacity-0' : 'opacity-100'
           }`}
           style={{ transitionDuration: `${FADE_MS}ms` }}

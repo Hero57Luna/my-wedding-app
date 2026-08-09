@@ -1,4 +1,6 @@
+import { GALLERY_IMAGES } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import SectionLabel from '../components/SectionLabel'
 
 const milestones = [
   {
@@ -30,23 +32,28 @@ const milestones = [
 
 function OurJourneySection() {
   return (
-    <AnimatedSection page={4}>
-      <h3 className="font-chomsky text-4xl text-stone-900">Our Journey</h3>
-      <p className="mt-2 text-sm leading-relaxed text-stone-600">
-        A short story of how two lives became one path, leading to this celebration.
-      </p>
+    <AnimatedSection page={5}>
+      <SectionLabel label="Love Story" />
 
-      <div className="relative mt-6 border-l border-stone-300 pl-6">
+      <figure className="mt-4 overflow-hidden border border-stone-300">
+        <img
+          src={GALLERY_IMAGES[0]}
+          alt="Bagas and Dhela"
+          className="aspect-[4/3] w-full object-cover"
+        />
+      </figure>
+
+      <h3 className="mt-5 font-chomsky text-3xl leading-tight text-stone-900">
+        A Journey of Bagas &amp; Dhela
+      </h3>
+
+      <div className="mt-5 space-y-6">
         {milestones.map((item) => (
-          <article
-            key={`${item.date}-${item.title}`}
-            className="relative pb-8 last:pb-0"
-          >
-            <span className="absolute -left-[25px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-stone-400 bg-stone-50" />
-            <p className="font-serif text-sm font-medium uppercase tracking-[0.2em] text-stone-500">
+          <article key={`${item.date}-${item.title}`}>
+            <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-stone-500">
               {item.date}
             </p>
-            <h4 className="mt-1 font-serif text-lg text-stone-900">{item.title}</h4>
+            <h4 className="mt-1 font-serif text-lg font-bold text-stone-900">{item.title}</h4>
             <p className="mt-2 text-sm leading-relaxed text-stone-600">{item.text}</p>
           </article>
         ))}

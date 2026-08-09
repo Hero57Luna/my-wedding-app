@@ -1,9 +1,13 @@
-function SectionFooter({ page }) {
+function SectionFooter({ page, dark = false }) {
+  const textColor = dark ? 'text-stone-400' : 'text-stone-500'
+  const ruleColor = dark ? 'border-stone-700' : 'border-stone-300'
+
   return (
-    <footer className="mt-8 w-full border-t border-stone-300 pt-5">
-      <p className="text-center font-serif text-xs uppercase tracking-[0.28em] text-stone-500">
-        Page {page}
-      </p>
+    <footer className={`mt-8 w-full border-t ${ruleColor} pt-3`}>
+      <div className={`flex items-center justify-between font-serif text-xs uppercase tracking-[0.2em] ${textColor}`}>
+        <p>Wedding Invitation</p>
+        <p>Page {page}</p>
+      </div>
     </footer>
   )
 }

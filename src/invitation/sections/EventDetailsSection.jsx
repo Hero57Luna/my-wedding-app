@@ -1,49 +1,54 @@
-import { EVENT_TIMES } from '../assets'
+import { EVENT_TIMES, MAIN_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+
+const VENUE_NAME = 'Gedung Widya Harja'
+const VENUE_ADDRESS = 'Probolinggo, Jawa Timur'
+const MAPS_URL = 'https://maps.app.goo.gl/c5F645zUXDJhymgv8?g_st=ic'
+
+function EventBlock({ title, time }) {
+  return (
+    <div className="text-center">
+      <h4 className="font-serif text-lg font-bold uppercase tracking-[0.08em] text-stone-900">
+        {title}
+      </h4>
+      <p className="mt-2 text-sm text-stone-700">Sunday, 6 September 2026</p>
+      <p className="text-sm text-stone-700">{time} WIB</p>
+
+      <p className="mt-4 font-serif text-sm font-bold text-stone-900">{VENUE_NAME}</p>
+      <p className="text-sm text-stone-600">{VENUE_ADDRESS}</p>
+
+      <a
+        href={MAPS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-block font-serif text-xs font-bold uppercase tracking-widest text-stone-800 underline underline-offset-4 transition-colors hover:text-stone-500"
+      >
+        View Location
+      </a>
+    </div>
+  )
+}
 
 function EventDetailsSection() {
   return (
-    <AnimatedSection page={3}>
-      <h3 className="font-chomsky text-4xl text-stone-900">Event Details</h3>
+    <AnimatedSection page={4}>
+      <div className="border border-stone-900 p-5 sm:p-6">
+        <h3 className="font-chomsky text-3xl leading-none text-stone-900">Wedding Details</h3>
 
-      <div className="mt-5 space-y-4">
-        <div className="flex items-start gap-3 rounded-md bg-stone-100 p-4">
-          <i className="fa-regular fa-calendar mt-1 text-stone-500" />
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Date</p>
-            <p className="mt-1 text-sm font-medium text-stone-700">
-              Sunday, 6 September 2026
-            </p>
-          </div>
+        <figure className="mt-5 overflow-hidden border border-stone-300">
+          <img
+            src={MAIN_IMAGE}
+            alt="Bagas and Dhela"
+            className="aspect-[4/3] w-full object-cover"
+          />
+        </figure>
+
+        <div className="mt-6">
+          <EventBlock title="Holy Matrimony" time={EVENT_TIMES.time1} />
         </div>
 
-        <div className="flex items-start gap-3 rounded-md bg-stone-100 p-4">
-          <i className="fa-regular fa-clock mt-1 text-stone-500" />
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Time</p>
-            <p className="mt-1 text-sm font-medium text-stone-700">
-              {EVENT_TIMES.time1} WIB
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-md bg-stone-100 p-4">
-          <i className="fa-solid fa-location-dot mt-1 self-start text-stone-500" />
-          <div className="flex-1">
-            <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Location</p>
-            <p className="mt-1 text-sm font-medium text-stone-700">
-              Gedung Widya Harja, Probolinggo
-            </p>
-          </div>
-          <a
-            href="https://maps.app.goo.gl/c5F645zUXDJhymgv8?g_st=ic"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex shrink-0 items-center gap-1.5 rounded bg-stone-700 px-3 py-1.5 text-xs font-bold tracking-widest text-white transition-colors hover:bg-stone-900"
-          >
-            <i className="fa-solid fa-map-location-dot" />
-            MAP
-          </a>
+        <div className="mt-8 border-t border-stone-300 pt-8">
+          <EventBlock title="Reception" time={EVENT_TIMES.time2} />
         </div>
       </div>
     </AnimatedSection>
