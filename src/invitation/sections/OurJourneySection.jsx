@@ -3,11 +3,13 @@ import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
 const paragraphs = [
-  'Our story began in junior high school back in 2012, where a simple friendship grew through endless conversations, shared laughter, and countless memories.',
-  'In 2017, for the first time, we left our hometown together to pursue higher education. Stepping into an unfamiliar world felt less daunting because we had each other by our side.',
-  'Then 2020 tested us in ways we never expected. Despite the challenges, uncertainties, and distance between dreams and reality, we chose to stay, grow, and fight for our future together.',
-  'By 2025, what once felt like distant dreams began to take shape. Together, we made plans for the life we had always imagined, one filled with love, purpose, and a shared future.',
-  'This is the year we choose each other for a lifetime. On 6 September 2026, surrounded by our loved ones, we begin our greatest adventure as husband and wife.',
+  'Our story began in junior high school, when we first met through a mutual friend. Bagas only recently told me that he had already admired me since our first year after seeing me on Facebook, a sweet little secret I only discovered after we were already in a relationship.',
+  'By our second year, simple conversations slowly turned into something more, and we began our journey together. Bagas became the first boy my father welcomed, and the first person I was ever allowed to date.',
+  'From junior high to high school, university, and adulthood, we grew side by side. Our journey was never perfect. We faced distance, difficult seasons, and countless challenges, but through it all, we remained committed to loving, supporting, and understanding each other.',
+  'Throughout our more than thirteen years together, we have never grown tired of one another. We still find joy in growing together, and even now, we can’t believe how far we’ve come.',
+  'What began with two teenagers simply getting to know each other has brought us here, to a proposal, to our wedding, and to the beginning of forever.',
+  'It was never easy, but we made it this far.',
+  'And now, we’re ready to begin our next chapter, together, for a lifetime.'
 ]
 
 function OurJourneySection() {
@@ -27,7 +29,7 @@ function OurJourneySection() {
         The story of Bagas &amp; Dhela
       </h3>
 
-      <div className="mt-5 columns-2 gap-4 text-justify text-xs leading-relaxed text-stone-600 hyphens-auto [&>p+p]:mt-2 [&>p:first-child]:first-letter:float-left [&>p:first-child]:first-letter:mr-1.5 [&>p:first-child]:first-letter:font-serif [&>p:first-child]:first-letter:text-4xl [&>p:first-child]:first-letter:font-bold [&>p:first-child]:first-letter:leading-[0.85] [&>p:first-child]:first-letter:text-stone-900">
+      <div className="mt-5 columns-2 gap-12 text-justify text-sm leading-loose text-stone-600 hyphens-auto [&>p+p]:mt-4 [&>p:first-child]:first-letter:float-left [&>p:first-child]:first-letter:mr-1.5 [&>p:first-child]:first-letter:font-serif [&>p:first-child]:first-letter:text-4xl [&>p:first-child]:first-letter:font-bold [&>p:first-child]:first-letter:leading-[0.85] [&>p:first-child]:first-letter:text-stone-900">
         {paragraphs.map((text) => (
           <p key={text}>{text}</p>
         ))}
