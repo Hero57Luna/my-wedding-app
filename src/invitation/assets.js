@@ -17,6 +17,7 @@ export const SONG_URL =
   'https://audio.jukehost.co.uk/019dfb66-8a24-7025-860e-3b3b3ae154fe'
 
 export const EVENT_TIMES = {
+  time0: '07:00',
   time1: '12:00 - 13:00',
   time2: '13:00 - 14:00',
 }

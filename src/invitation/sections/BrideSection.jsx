@@ -7,7 +7,7 @@ function BrideSection() {
     <AnimatedSection page={3}>
       <h3 className="text-right font-chomsky text-4xl leading-none text-stone-900">The Bride</h3>
       <div className="mt-3">
-        <SectionLabel label="Dhela" align="right" />
+        <SectionLabel label="Dhela" endLabel="#DHEstinedforBAGAS" align="right" />
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-200/50">
@@ -22,8 +22,9 @@ function BrideSection() {
         Dhelanda La Nina Dwipa Tiara Andiyani
       </h4>
       <p className="mt-2 text-right text-sm leading-relaxed text-stone-600">
-        The Daughter of Mr. Pandu Andiyani Gagadang Pamungkas
+        <strong>Parents of the Bride</strong>
         <br />
+        Mr. Pandu Andiyani Gagadang Pamungkas <br/>
         &amp; Mrs. Julidwiasih Soenardjo
       </p>
 

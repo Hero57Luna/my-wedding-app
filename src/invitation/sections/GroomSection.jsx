@@ -7,7 +7,7 @@ function GroomSection() {
     <AnimatedSection page={2}>
       <h3 className="font-chomsky text-4xl leading-none text-stone-900">The Groom</h3>
       <div className="mt-3">
-        <SectionLabel label="Bagas" align="left" />
+        <SectionLabel label="Bagas" endLabel="#DHEstinedforBAGAS" align="left" />
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-200/50">
@@ -22,8 +22,9 @@ function GroomSection() {
         Rahadian Bagaskara Adikusuma
       </h4>
       <p className="mt-2 text-sm leading-relaxed text-stone-600">
-        The Son of Mr. Jeki Nurahman Adikusuma
+        <strong>Parents of the Groom</strong>
         <br />
+        Mr. Jeki Nurahman Adikusuma <br/>
         &amp; Mrs. Dyah Yully Marthawati
       </p>
 

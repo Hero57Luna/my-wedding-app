@@ -44,7 +44,7 @@ function EventDetailsSection() {
         </figure>
 
         <div className="mt-6">
-          <EventBlock title="Holy Matrimony" time={EVENT_TIMES.time1} />
+          <EventBlock title="Holy Matrimony" time={EVENT_TIMES.time0} />
         </div>
 
         <div className="mt-8 border-t border-stone-300 pt-8">
