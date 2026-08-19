@@ -4,7 +4,7 @@ import SectionLabel from '../components/SectionLabel'
 
 function GallerySection() {
   return (
-    <AnimatedSection page={6}>
+    <AnimatedSection page={7}>
       <h3 className="font-chomsky text-3xl tracking-[0.02em] text-stone-900">
         Our Moments
       </h3>

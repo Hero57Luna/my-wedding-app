@@ -25,11 +25,14 @@ function OpeningSection() {
 
       <div className="mt-6 text-center">
         <h3 className="font-serif text-lg font-bold uppercase tracking-[0.08em] text-stone-900">
-          With Joy In Our Hearts
+          Dear Family & Friends
         </h3>
         <p className="mt-3 font-serif text-sm leading-relaxed text-stone-600">
-          With joy in our hearts, we invite you to celebrate the beginning of our
-          new chapter.
+          We're so happy to invite you to share this meaningful day with us. Your presence will make our wedding even more special.
+        </p> <br />
+        <p className="mt-3 font-serif text-sm leading-relaxed text-stone-600">
+          With love, <br />
+          <strong>Dhela & Bagas</strong>
         </p>
       </div>
     </AnimatedSection>

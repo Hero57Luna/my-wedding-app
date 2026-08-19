@@ -32,7 +32,7 @@ const milestones = [
 
 function OurJourneySection() {
   return (
-    <AnimatedSection page={5}>
+    <AnimatedSection page={6}>
       <SectionLabel label="Love Story" />
 
       <figure className="mt-4 overflow-hidden border border-stone-300">

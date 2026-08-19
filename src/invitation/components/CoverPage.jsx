@@ -9,7 +9,7 @@ function CoverPage({ onOpenInvitation }) {
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-lg flex-col bg-white px-5 text-stone-900 sm:px-8">
       {/* Section 1 — headline */}
       <header className="shrink-0 pt-[max(1.75rem,env(safe-area-inset-top))] pb-4 sm:pb-6">
-        <h1 className="font-chomsky text-[clamp(2.25rem,10vw,3rem)] leading-none text-stone-900">
+        <h1 className="text-center font-chomsky text-[clamp(2.25rem,10vw,4rem)] leading-none text-stone-900">
           The Wedding Of
         </h1>
         <div className="mt-4 flex items-center justify-between border-t border-stone-800 pt-2 font-serif text-[clamp(0.75rem,2.4vw,0.9rem)] text-stone-700">

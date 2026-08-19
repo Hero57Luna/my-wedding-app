@@ -1,7 +1,7 @@
 import { EVENT_TIMES, MAIN_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 
-const VENUE_NAME = 'Gedung Widya Harja'
+const VENUE_NAME = 'Multipurpose Widya Harja Probolinggo Building'
 const VENUE_ADDRESS = 'Probolinggo, Jawa Timur'
 const MAPS_URL = 'https://maps.app.goo.gl/c5F645zUXDJhymgv8?g_st=ic'
 
@@ -31,9 +31,9 @@ function EventBlock({ title, time }) {
 
 function EventDetailsSection() {
   return (
-    <AnimatedSection page={4}>
+    <AnimatedSection page={5}>
       <div className="border border-stone-900 p-5 sm:p-6">
-        <h3 className="font-chomsky text-3xl leading-none text-stone-900">Wedding Details</h3>
+        <h3 className="text-center font-chomsky text-5xl leading-none text-stone-900">Wedding Details</h3>
 
         <figure className="mt-5 overflow-hidden border border-stone-300">
           <img
@@ -44,7 +44,7 @@ function EventDetailsSection() {
         </figure>
 
         <div className="mt-6">
-          <EventBlock title="Holy Matrimony" time={EVENT_TIMES.time0} />
+          <EventBlock title="Marriage Ceremony" time={EVENT_TIMES.time0} />
         </div>
 
         <div className="mt-8 border-t border-stone-300 pt-8">

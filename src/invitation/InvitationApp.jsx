@@ -4,6 +4,7 @@ import CoverPage from './components/CoverPage'
 import WeddingGiftView from './components/WeddingGiftView'
 import { MAIN_IMAGE, SONG_URL } from './assets'
 import BrideSection from './sections/BrideSection'
+import CountdownSection from './sections/CountdownSection'
 import EventDetailsSection from './sections/EventDetailsSection'
 import GallerySection from './sections/GallerySection'
 import GroomSection from './sections/GroomSection'
@@ -122,6 +123,7 @@ function InvitationApp() {
             <OpeningSection />
             <GroomSection />
             <BrideSection />
+            <CountdownSection />
             <EventDetailsSection />
             <OurJourneySection />
             <GallerySection />

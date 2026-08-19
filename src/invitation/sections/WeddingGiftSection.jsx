@@ -4,7 +4,7 @@ import SectionLabel from '../components/SectionLabel'
 
 function WeddingGiftSection({ onOpenGift }) {
   return (
-    <AnimatedSection className="pb-4" page={7}>
+    <AnimatedSection className="pb-4" page={8}>
       <h3 className="font-chomsky text-3xl leading-none text-stone-900">Wedding Gift</h3>
 
       <p className="mt-4 text-sm leading-relaxed text-stone-600">
