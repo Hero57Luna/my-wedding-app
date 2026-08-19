@@ -7,7 +7,7 @@ function OpeningSection() {
       <p className="text-right font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
         Sunday, 6 September 2026
       </p>
-      <h2 className="mt-3 font-chomsky text-4xl leading-none text-stone-900 sm:text-5xl">
+      <h2 className="text-center mt-3 font-chomsky text-4xl leading-none text-stone-900 sm:text-5xl">
         Our Wedding Day
       </h2>
       <div className="mt-4 flex items-center justify-between border-t border-stone-800 pt-2 font-serif text-sm text-stone-700">
