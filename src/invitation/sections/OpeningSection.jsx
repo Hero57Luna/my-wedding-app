@@ -8,9 +8,9 @@ function OpeningSection() {
 
   return (
     <AnimatedSection className="pt-4" page={1}>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <LanguageToggleButton />
-        <p className="font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
+        <p className="ml-auto font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
           <FormattedMessage id="opening.date" />
         </p>
       </div>
