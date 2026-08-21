@@ -4,6 +4,7 @@ import ProtectedRoute from './auth/ProtectedRoute'
 import DashboardApp from './dashboard/DashboardApp'
 import LoginPage from './dashboard/LoginPage'
 import InvitationApp from './invitation/InvitationApp'
+import LocaleProvider from './invitation/i18n/LocaleProvider'
 import FirestoreTestPage from './FirestoreTestPage'
 
 function App() {
@@ -11,7 +12,14 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<InvitationApp />} />
+          <Route
+            path="/"
+            element={
+              <LocaleProvider>
+                <InvitationApp />
+              </LocaleProvider>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/test" element={<FirestoreTestPage />} />
           <Route

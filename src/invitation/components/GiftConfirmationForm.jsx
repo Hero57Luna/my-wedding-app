@@ -1,19 +1,21 @@
 import { useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { GIFT_ACCOUNTS } from '../assets'
 
 const GIFT_TYPES = [
-  { value: 'transfer-of-money', label: 'Transfer of Money' },
-  { value: 'send-gift', label: 'Send a Gift' },
+  { value: 'transfer-of-money', labelId: 'confirm.transfer' },
+  { value: 'send-gift', labelId: 'confirm.sendGift' },
 ]
 
 const TRANSFER_DESTINATIONS = [
-  { value: 'tf-to-groom', label: `${GIFT_ACCOUNTS.groom.name} (Groom)` },
-  { value: 'tf-to-bride', label: `${GIFT_ACCOUNTS.bride.name} (Bride)` },
+  { value: 'tf-to-groom', labelId: 'confirm.toGroom', name: GIFT_ACCOUNTS.groom.name },
+  { value: 'tf-to-bride', labelId: 'confirm.toBride', name: GIFT_ACCOUNTS.bride.name },
 ]
 
 function GiftConfirmationForm() {
+  const intl = useIntl()
   const [name, setName] = useState('')
   const [type, setType] = useState('transfer-of-money')
   const [destination, setDestination] = useState('tf-to-groom')
@@ -38,12 +40,13 @@ function GiftConfirmationForm() {
         destination,
         createdAt: serverTimestamp(),
       })
-      setStatus({ type: 'success', text: 'Thank you! Your confirmation has been received.' })
+      setStatus({ type: 'success', text: intl.formatMessage({ id: 'confirm.success' }) })
       setName('')
       setType('transfer-of-money')
       setDestination('tf-to-groom')
     } catch (err) {
-      setStatus({ type: 'error', text: err.message })
+      console.error(err)
+      setStatus({ type: 'error', text: intl.formatMessage({ id: 'form.error' }) })
     } finally {
       setSaving(false)
     }
@@ -52,9 +55,11 @@ function GiftConfirmationForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-stone-300 bg-stone-50 p-5">
       <div>
-        <h4 className="font-serif text-lg font-bold text-stone-900">Shipment Confirmation</h4>
+        <h4 className="font-serif text-lg font-bold text-stone-900">
+          <FormattedMessage id="confirm.title" />
+        </h4>
         <p className="mt-1 text-xs italic leading-relaxed text-stone-500">
-          Please confirm in the column below to facilitate data collection.
+          <FormattedMessage id="confirm.subtitle" />
         </p>
       </div>
 
@@ -76,7 +81,7 @@ function GiftConfirmationForm() {
           htmlFor="gift-sender-name"
           className="block font-serif text-xs uppercase tracking-[0.15em] text-stone-600"
         >
-          Name
+          <FormattedMessage id="common.name" />
         </label>
         <input
           id="gift-sender-name"
@@ -85,13 +90,15 @@ function GiftConfirmationForm() {
           value={name}
           onChange={(event) => setName(event.target.value)}
           disabled={saving}
-          placeholder="Sender Name"
+          placeholder={intl.formatMessage({ id: 'confirm.namePlaceholder' })}
           className="mt-2 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200 disabled:opacity-50"
         />
       </div>
 
       <div>
-        <p className="font-serif text-xs uppercase tracking-[0.15em] text-stone-600">Gift Type</p>
+        <p className="font-serif text-xs uppercase tracking-[0.15em] text-stone-600">
+          <FormattedMessage id="confirm.giftType" />
+        </p>
         <div className="mt-2 space-y-2">
           {GIFT_TYPES.map((option) => (
             <label key={option.value} className="flex items-center gap-2 text-sm text-stone-800">
@@ -104,7 +111,7 @@ function GiftConfirmationForm() {
                 disabled={saving}
                 className="h-4 w-4 border-stone-400 text-stone-800 focus:ring-stone-400"
               />
-              {option.label}
+              <FormattedMessage id={option.labelId} />
             </label>
           ))}
         </div>
@@ -112,7 +119,7 @@ function GiftConfirmationForm() {
 
       <div>
         <p className="font-serif text-xs uppercase tracking-[0.15em] text-stone-600">
-          Shipment Destination
+          <FormattedMessage id="confirm.destination" />
         </p>
         <div className="mt-2 space-y-2">
           {type === 'transfer-of-money' ? (
@@ -127,11 +134,13 @@ function GiftConfirmationForm() {
                   disabled={saving}
                   className="h-4 w-4 border-stone-400 text-stone-800 focus:ring-stone-400"
                 />
-                {option.label}
+                <FormattedMessage id={option.labelId} values={{ name: option.name }} />
               </label>
             ))
           ) : (
-            <p className="text-sm text-stone-800">Gift &mdash; shipped to the address above</p>
+            <p className="text-sm text-stone-800">
+              <FormattedMessage id="confirm.giftNote" />
+            </p>
           )}
         </div>
       </div>
@@ -141,7 +150,7 @@ function GiftConfirmationForm() {
         disabled={saving}
         className="w-full rounded-md bg-stone-900 px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-white transition hover:bg-stone-700 disabled:opacity-50"
       >
-        {saving ? 'Confirming…' : 'Confirmation'}
+        <FormattedMessage id={saving ? 'confirm.submitting' : 'confirm.submit'} />
       </button>
     </form>
   )

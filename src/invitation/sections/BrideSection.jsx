@@ -1,11 +1,16 @@
+import { FormattedMessage, useIntl } from 'react-intl'
 import { BRIDE_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
 function BrideSection() {
+  const intl = useIntl()
+
   return (
     <AnimatedSection page={3}>
-      <h3 className="text-right font-chomsky text-4xl leading-none text-stone-900">The Bride</h3>
+      <h3 className="text-right font-chomsky text-4xl leading-none text-stone-900">
+        <FormattedMessage id="bride.heading" />
+      </h3>
       <div className="mt-3">
         <SectionLabel label="Dhela" endLabel="#DHEstinedforBAGAS" align="right" />
       </div>
@@ -21,11 +26,8 @@ function BrideSection() {
       <h4 className="mt-5 text-right font-serif text-xl font-bold text-stone-900">
         Dhelanda La Nina Dwipa Tiara Andiyani
       </h4>
-      <p className="mt-2 text-right text-sm leading-relaxed text-stone-600">
-        <strong>Parents of the Bride</strong>
-        <br />
-        Mr. Pandu Andiyani Gagadang Pamungkas <br/>
-        &amp; Mrs. Julidwiasih Soenardjo
+      <p className="mt-2 whitespace-pre-line text-right text-sm leading-relaxed text-stone-600">
+        <FormattedMessage id="bride.parents" />
       </p>
 
       <a
@@ -34,7 +36,7 @@ function BrideSection() {
         rel="noopener noreferrer"
         className="mt-4 block text-right font-serif text-xs font-bold uppercase tracking-widest text-stone-800 underline underline-offset-4 transition-colors hover:text-stone-500"
       >
-        Instagram
+        {intl.formatMessage({ id: 'common.instagram' })}
       </a>
     </AnimatedSection>
   )

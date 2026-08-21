@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 /**
  * Shared "ATM card" style surface used by the wedding gift bank account and
@@ -36,7 +37,7 @@ function CopyCard({ copyValue, children }) {
           className="flex items-center gap-1.5 rounded-md bg-stone-800/90 px-3 py-1.5 font-serif text-xs uppercase tracking-widest text-white transition hover:bg-stone-700"
         >
           <i className={`fa-solid ${copied ? 'fa-check' : 'fa-copy'}`} />
-          {copied ? 'Copied' : 'Copy'}
+          <FormattedMessage id={copied ? 'card.copied' : 'card.copy'} />
         </button>
       </div>
     </div>

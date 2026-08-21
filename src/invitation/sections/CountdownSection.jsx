@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { MAIN_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
@@ -31,6 +32,7 @@ function Unit({ value, label }) {
 
 function CountdownSection() {
   const [time, setTime] = useState(remaining)
+  const intl = useIntl()
 
   useEffect(() => {
     const id = setInterval(() => setTime(remaining()), 1000)
@@ -39,24 +41,29 @@ function CountdownSection() {
 
   return (
     <AnimatedSection page={4}>
-      <h3 className="text-center font-chomsky text-4xl leading-none text-stone-900">Happily Ever After Begins In</h3>
+      <h3 className="text-center font-chomsky text-4xl leading-none text-stone-900">
+        <FormattedMessage id="countdown.heading" />
+      </h3>
       <div className="mt-3">
-        <SectionLabel label="6 September 2026" endLabel="07:00 WIB" />
+        <SectionLabel
+          label={intl.formatMessage({ id: 'countdown.date' })}
+          endLabel={intl.formatMessage({ id: 'countdown.time' })}
+        />
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-200/50">
         <img
           src={MAIN_IMAGE}
-          alt="Bagas and Dhela"
+          alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
         />
       </figure>
 
       <div className="mt-5 flex items-start divide-x divide-stone-300 border border-stone-900 px-2 py-6">
-        <Unit value={time.days} label="Days" />
-        <Unit value={time.hours} label="Hours" />
-        <Unit value={time.minutes} label="Minutes" />
-        <Unit value={time.seconds} label="Seconds" />
+        <Unit value={time.days} label={intl.formatMessage({ id: 'countdown.days' })} />
+        <Unit value={time.hours} label={intl.formatMessage({ id: 'countdown.hours' })} />
+        <Unit value={time.minutes} label={intl.formatMessage({ id: 'countdown.minutes' })} />
+        <Unit value={time.seconds} label={intl.formatMessage({ id: 'countdown.seconds' })} />
       </div>
     </AnimatedSection>
   )

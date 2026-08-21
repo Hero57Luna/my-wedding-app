@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   addDoc,
   collection,
@@ -17,16 +18,8 @@ const WINDOW = 100
 
 const wishesRef = collection(db, 'best-wishes')
 
-function formatWhen(date) {
-  if (!date) return ''
-  return date.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  })
-}
-
 function BestWishesForm() {
+  const intl = useIntl()
   const [from, setFrom] = useState('')
   const [wishes, setWishes] = useState('')
   const [saving, setSaving] = useState(false)
@@ -50,9 +43,12 @@ function BestWishesForm() {
           }),
         )
       },
-      (err) => setStatus({ type: 'error', text: err.message }),
+      (err) => {
+        console.error(err)
+        setStatus({ type: 'error', text: intl.formatMessage({ id: 'form.error' }) })
+      },
     )
-  }, [])
+  }, [intl])
 
   const pageCount = Math.max(1, Math.ceil(items.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount - 1)
@@ -70,12 +66,13 @@ function BestWishesForm() {
         wishes: wishes.trim(),
         createdAt: serverTimestamp(),
       })
-      setStatus({ type: 'success', text: 'Thank you for your wishes!' })
+      setStatus({ type: 'success', text: intl.formatMessage({ id: 'wishes.success' }) })
       setFrom('')
       setWishes('')
       setPage(0)
     } catch (err) {
-      setStatus({ type: 'error', text: err.message })
+      console.error(err)
+      setStatus({ type: 'error', text: intl.formatMessage({ id: 'form.error' }) })
     } finally {
       setSaving(false)
     }
@@ -88,9 +85,11 @@ function BestWishesForm() {
         className="space-y-4 rounded-2xl border border-stone-300 bg-stone-50 p-5"
       >
         <div>
-          <h4 className="font-serif text-lg font-bold text-stone-900">Send Your Wishes</h4>
+          <h4 className="font-serif text-lg font-bold text-stone-900">
+            <FormattedMessage id="wishes.title" />
+          </h4>
           <p className="mt-1 text-xs italic leading-relaxed text-stone-500">
-            Leave a message for the bride and groom.
+            <FormattedMessage id="wishes.subtitle" />
           </p>
         </div>
 
@@ -112,7 +111,7 @@ function BestWishesForm() {
             htmlFor="wish-from"
             className="block font-serif text-xs uppercase tracking-[0.15em] text-stone-600"
           >
-            Name
+            <FormattedMessage id="common.name" />
           </label>
           <input
             id="wish-from"
@@ -122,7 +121,7 @@ function BestWishesForm() {
             value={from}
             onChange={(event) => setFrom(event.target.value)}
             disabled={saving}
-            placeholder="Your Name"
+            placeholder={intl.formatMessage({ id: 'wishes.namePlaceholder' })}
             className="mt-2 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200 disabled:opacity-50"
           />
         </div>
@@ -132,7 +131,7 @@ function BestWishesForm() {
             htmlFor="wish-text"
             className="block font-serif text-xs uppercase tracking-[0.15em] text-stone-600"
           >
-            Wishes
+            <FormattedMessage id="wishes.label" />
           </label>
           <textarea
             id="wish-text"
@@ -142,7 +141,7 @@ function BestWishesForm() {
             value={wishes}
             onChange={(event) => setWishes(event.target.value)}
             disabled={saving}
-            placeholder="Write your best wishes…"
+            placeholder={intl.formatMessage({ id: 'wishes.placeholder' })}
             className="mt-2 w-full resize-none rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-stone-500 focus:ring-2 focus:ring-stone-200 disabled:opacity-50"
           />
         </div>
@@ -152,14 +151,14 @@ function BestWishesForm() {
           disabled={saving}
           className="w-full rounded-md bg-stone-900 px-4 py-3 font-serif text-xs uppercase tracking-[0.2em] text-white transition hover:bg-stone-700 disabled:opacity-50"
         >
-          {saving ? 'Sending…' : 'Send Wishes'}
+          <FormattedMessage id={saving ? 'wishes.submitting' : 'wishes.submit'} />
         </button>
       </form>
 
       <div className="mt-6 space-y-4">
         {visible.length === 0 ? (
           <p className="text-sm italic text-stone-500">
-            No wishes yet. Be the first to send one.
+            <FormattedMessage id="wishes.empty" />
           </p>
         ) : (
           visible.map((item) => (
@@ -169,7 +168,15 @@ function BestWishesForm() {
             >
               <header className="flex items-baseline justify-between gap-3">
                 <p className="truncate font-serif text-sm font-bold text-stone-900">{item.from}</p>
-                <p className="shrink-0 text-xs text-stone-400">{formatWhen(item.createdAt)}</p>
+                <p className="shrink-0 text-xs text-stone-400">
+                  {item.createdAt
+                    ? intl.formatDate(item.createdAt, {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })
+                    : ''}
+                </p>
               </header>
               <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-stone-600">
                 {item.wishes}
@@ -187,7 +194,7 @@ function BestWishesForm() {
             disabled={safePage === 0}
             className="font-serif text-xs uppercase tracking-[0.15em] text-stone-700 underline underline-offset-4 transition hover:text-stone-500 disabled:opacity-30"
           >
-            Previous
+            <FormattedMessage id="wishes.previous" />
           </button>
           <span className="text-xs text-stone-500">
             {safePage + 1} / {pageCount}
@@ -198,7 +205,7 @@ function BestWishesForm() {
             disabled={safePage >= pageCount - 1}
             className="font-serif text-xs uppercase tracking-[0.15em] text-stone-700 underline underline-offset-4 transition hover:text-stone-500 disabled:opacity-30"
           >
-            Next
+            <FormattedMessage id="wishes.next" />
           </button>
         </div>
       )}

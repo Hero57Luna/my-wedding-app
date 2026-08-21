@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import AudioToggleButton from './components/AudioToggleButton'
 import CoverPage from './components/CoverPage'
 import WeddingGiftView from './components/WeddingGiftView'
+import LocaleFade from './i18n/LocaleFade'
 import { MAIN_IMAGE, SONG_URL } from './assets'
 import BrideSection from './sections/BrideSection'
 import CountdownSection from './sections/CountdownSection'
@@ -15,6 +17,7 @@ import WeddingGiftSection from './sections/WeddingGiftSection'
 const FADE_MS = 700
 
 function InvitationApp() {
+  const intl = useIntl()
   const audioRef = useRef(null)
   const userMutedPreferenceRef = useRef(false)
   const pendingCoverRemovalRef = useRef(false)
@@ -104,22 +107,22 @@ function InvitationApp() {
         <aside className="relative hidden h-screen w-3/5 lg:block">
           <img
             src={MAIN_IMAGE}
-            alt="Wedding portrait of Bagas and Dhela"
+            alt={intl.formatMessage({ id: 'aside.alt' })}
             className="sticky top-0 h-screen w-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
-          <div className="absolute bottom-10 left-10 border-l border-white/70 pl-5 text-white">
+          <LocaleFade className="absolute bottom-10 left-10 border-l border-white/70 pl-5 text-white">
             <p className="font-serif text-sm uppercase tracking-[0.25em]">
-              The Wedding Of
+              <FormattedMessage id="cover.title" />
             </p>
             <h1 className="mt-2 font-chomsky text-4xl tracking-wide">
               Bagas & Dhela
             </h1>
-          </div>
+          </LocaleFade>
         </aside>
 
         <section className="w-full lg:h-screen lg:w-2/5 lg:overflow-y-auto">
-          <div className="space-y-8 border-x border-stone-300/80 bg-white p-5 sm:p-8 lg:p-10">
+          <LocaleFade className="space-y-8 border-x border-stone-300/80 bg-white p-5 sm:p-8 lg:p-10">
             <OpeningSection />
             <GroomSection />
             <BrideSection />
@@ -128,7 +131,7 @@ function InvitationApp() {
             <OurJourneySection />
             <GallerySection />
             <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} />
-          </div>
+          </LocaleFade>
         </section>
       </div>
 

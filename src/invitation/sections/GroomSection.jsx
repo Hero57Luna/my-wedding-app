@@ -1,11 +1,16 @@
+import { FormattedMessage, useIntl } from 'react-intl'
 import { GROOM_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
 function GroomSection() {
+  const intl = useIntl()
+
   return (
     <AnimatedSection page={2}>
-      <h3 className="font-chomsky text-4xl leading-none text-stone-900">The Groom</h3>
+      <h3 className="font-chomsky text-4xl leading-none text-stone-900">
+        <FormattedMessage id="groom.heading" />
+      </h3>
       <div className="mt-3">
         <SectionLabel label="Bagas" endLabel="#DHEstinedforBAGAS" align="left" />
       </div>
@@ -21,11 +26,8 @@ function GroomSection() {
       <h4 className="mt-5 font-serif text-xl font-bold text-stone-900">
         Rahadian Bagaskara Adikusuma
       </h4>
-      <p className="mt-2 text-sm leading-relaxed text-stone-600">
-        <strong>Parents of the Groom</strong>
-        <br />
-        Mr. Jeki Nurahman Adikusuma <br/>
-        &amp; Mrs. Dyah Yully Marthawati
+      <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-stone-600">
+        <FormattedMessage id="groom.parents" />
       </p>
 
       <a
@@ -34,7 +36,7 @@ function GroomSection() {
         rel="noopener noreferrer"
         className="mt-4 inline-block font-serif text-xs font-bold uppercase tracking-widest text-stone-800 underline underline-offset-4 transition-colors hover:text-stone-500"
       >
-        Instagram
+        {intl.formatMessage({ id: 'common.instagram' })}
       </a>
     </AnimatedSection>
   )

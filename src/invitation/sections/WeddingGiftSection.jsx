@@ -1,17 +1,20 @@
+import { FormattedMessage, useIntl } from 'react-intl'
 import { GALLERY_IMAGES } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import BestWishesForm from '../components/BestWishesForm'
 import SectionLabel from '../components/SectionLabel'
 
 function WeddingGiftSection({ onOpenGift }) {
+  const intl = useIntl()
+
   return (
     <AnimatedSection className="pb-4" page={8}>
-      <h3 className="font-chomsky text-4xl leading-none text-stone-900">Wedding Gift</h3>
+      <h3 className="font-chomsky text-4xl leading-none text-stone-900">
+        <FormattedMessage id="gift.heading" />
+      </h3>
 
       <p className="mt-4 text-sm leading-relaxed text-stone-600">
-        Your presence is a present in itself. But if you do wish to give us
-        something else, please tap the button down below for further
-        information:
+        <FormattedMessage id="gift.intro" />
       </p>
 
       <button
@@ -19,32 +22,29 @@ function WeddingGiftSection({ onOpenGift }) {
         onClick={onOpenGift}
         className="mt-6 font-serif text-md font-bold uppercase tracking-widest text-stone-800 underline underline-offset-4 transition-colors hover:text-stone-500"
       >
-        Wedding Gift
+        <FormattedMessage id="gift.button" />
       </button>
 
       <div className="mt-10">
-        <SectionLabel label="Best Wishes" />
+        <SectionLabel label={intl.formatMessage({ id: 'gift.bestWishes' })} />
       </div>
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
         <img
           src={GALLERY_IMAGES[1]}
-          alt="Bagas and Dhela"
+          alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
         />
       </figure>
 
       <p className="mt-6 text-sm leading-relaxed text-stone-700">
-        It would be our greatest honor to have your presence and blessings as we
-        begin our journey as husband and wife.
+        <FormattedMessage id="gift.blessing" />
       </p>
 
       <BestWishesForm />
 
-      <p className="mt-6 font-serif text-lg italic text-stone-800">
-        With love,
-        <br />
-        Bagas &amp; Dhela
+      <p className="mt-6 whitespace-pre-line font-serif text-lg italic text-stone-800">
+        <FormattedMessage id="gift.signOff" />
       </p>
     </AnimatedSection>
   )

@@ -1,19 +1,21 @@
+import { FormattedMessage, useIntl } from 'react-intl'
 import { GALLERY_IMAGES } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
 function GallerySection() {
+  const intl = useIntl()
+
   return (
     <AnimatedSection page={7}>
       <h3 className="font-chomsky text-3xl tracking-[0.02em] text-stone-900">
-        Our Moments
+        <FormattedMessage id="gallery.heading" />
       </h3>
       <div className="mt-3">
-        <SectionLabel label="Portrait of us" />
+        <SectionLabel label={intl.formatMessage({ id: 'gallery.label' })} />
       </div>
       <p className="mt-4 text-center text-sm leading-relaxed text-stone-600">
-        Happy marriages begin when we marry the ones we love, and they blossom
-        when we love the ones we marry.
+        <FormattedMessage id="gallery.caption" />
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-2">
@@ -21,7 +23,7 @@ function GallerySection() {
           <figure key={image} className="overflow-hidden border border-stone-300 bg-stone-100">
             <img
               src={image}
-              alt={`Prewedding moment ${index + 1}`}
+              alt={intl.formatMessage({ id: 'gallery.imageAlt' }, { number: index + 1 })}
               className="h-36 w-full object-cover"
             />
           </figure>
