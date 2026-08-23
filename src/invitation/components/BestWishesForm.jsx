@@ -69,6 +69,7 @@ function BestWishesForm({ guestId }) {
         from: from.trim(),
         wishes: wishes.trim(),
         attending,
+        guestRef: guestId ?? null,
         createdAt: serverTimestamp(),
       })
       if (guestId) {
