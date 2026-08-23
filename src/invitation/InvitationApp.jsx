@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AudioToggleButton from './components/AudioToggleButton'
 import CoverPage from './components/CoverPage'
+import LanguageToggleButton from './components/LanguageToggleButton'
 import WeddingGiftView from './components/WeddingGiftView'
 import LocaleFade from './i18n/LocaleFade'
 import { MAIN_IMAGE, SONG_URL } from './assets'
@@ -150,7 +151,10 @@ function InvitationApp() {
       )}
 
       {invitationActive && (
-        <AudioToggleButton isMuted={isMuted} onToggle={handleToggleMute} />
+        <>
+          <LanguageToggleButton />
+          <AudioToggleButton isMuted={isMuted} onToggle={handleToggleMute} />
+        </>
       )}
 
       {giftOpen && <WeddingGiftView onClose={() => setGiftOpen(false)} />}

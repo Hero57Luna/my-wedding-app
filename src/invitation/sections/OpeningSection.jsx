@@ -1,19 +1,15 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { OPENING_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
-import LanguageToggleButton from '../components/LanguageToggleButton'
 
 function OpeningSection() {
   const intl = useIntl()
 
   return (
     <AnimatedSection className="pt-4" page={1}>
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <LanguageToggleButton />
-        <p className="ml-auto font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
-          <FormattedMessage id="opening.date" />
-        </p>
-      </div>
+      <p className="text-right font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
+        <FormattedMessage id="opening.date" />
+      </p>
       <h2 className="text-center mt-3 font-chomsky text-4xl leading-none text-stone-900 sm:text-5xl">
         <FormattedMessage id="opening.title" />
       </h2>
