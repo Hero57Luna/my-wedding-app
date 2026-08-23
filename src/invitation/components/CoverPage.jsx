@@ -4,7 +4,7 @@ import { COVER_IMAGE } from '../assets'
 const GROOM_NAME = 'Bagas'
 const BRIDE_NAME = 'Dhela'
 
-function CoverPage({ onOpenInvitation }) {
+function CoverPage({ guestName, onOpenInvitation }) {
   const intl = useIntl()
 
   return (
@@ -42,7 +42,7 @@ function CoverPage({ onOpenInvitation }) {
             <FormattedMessage id="cover.dear" />
           </p>
           <p className="font-serif text-lg font-bold text-stone-900">
-            <FormattedMessage id="common.familyFriends" />
+            {guestName || <FormattedMessage id="common.familyFriends" />}
           </p>
         </div>
       </main>

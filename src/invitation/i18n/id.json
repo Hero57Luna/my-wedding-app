@@ -17,7 +17,7 @@
   "opening.invited": "Anda Diundang",
   "opening.greeting": "Kepada Keluarga & Sahabat",
   "opening.body": "Dengan penuh sukacita kami mengundang Anda untuk berbagi hari yang berarti ini bersama kami. Kehadiran Anda akan membuat hari pernikahan kami semakin istimewa.",
-  "opening.signOff": "Dengan penuh cinta,\n<b>Dhela & Bagas</b>",
+  "opening.signOff": "Dengan penuh cinta,\n<b>Bagas & Dhela</b>",
 
   "groom.heading": "Mempelai Pria",
   "groom.parents": "<b>Putra dari</b>\nBapak Jeki Nurahman Adikusuma\n& Ibu Dyah Yully Marthawati",
@@ -36,7 +36,7 @@
   "event.heading": "Detail Acara",
   "event.ceremony": "Akad Nikah",
   "event.reception": "Resepsi",
-  "event.time": "Pukul {time} WIB",
+  "event.time": "Pukul {time}",
   "event.venueName": "Gedung Serbaguna Widya Harja Probolinggo",
   "event.venueAddress": "Probolinggo, Jawa Timur",
   "event.viewLocation": "Lihat Lokasi",

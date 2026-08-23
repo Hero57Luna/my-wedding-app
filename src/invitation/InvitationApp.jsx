@@ -18,7 +18,7 @@ import WeddingGiftSection from './sections/WeddingGiftSection'
 
 const FADE_MS = 700
 
-function InvitationApp() {
+function InvitationApp({ guest }) {
   const intl = useIntl()
   const audioRef = useRef(null)
   const userMutedPreferenceRef = useRef(false)
@@ -129,7 +129,7 @@ function InvitationApp() {
             <GroomSection />
             <BrideSection />
             <CountdownSection />
-            <EventDetailsSection />
+            <EventDetailsSection receptionTime={guest.time} />
             <OurJourneySection />
             <GallerySection />
             <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} />
@@ -146,7 +146,7 @@ function InvitationApp() {
           style={{ transitionDuration: `${FADE_MS}ms` }}
           onTransitionEnd={handleCoverFadeEnd}
         >
-          <CoverPage onOpenInvitation={handleOpenInvitation} />
+          <CoverPage guestName={guest.name} onOpenInvitation={handleOpenInvitation} />
         </div>
       )}
 

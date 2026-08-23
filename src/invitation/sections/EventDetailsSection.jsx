@@ -36,7 +36,7 @@ function EventBlock({ titleId, time }) {
   )
 }
 
-function EventDetailsSection() {
+function EventDetailsSection({ receptionTime }) {
   const intl = useIntl()
 
   return (
@@ -59,7 +59,7 @@ function EventDetailsSection() {
         </div>
 
         <div className="mt-8 border-t border-stone-300 pt-8">
-          <EventBlock titleId="event.reception" time={EVENT_TIMES.time2} />
+          <EventBlock titleId="event.reception" time={receptionTime} />
         </div>
       </div>
     </AnimatedSection>

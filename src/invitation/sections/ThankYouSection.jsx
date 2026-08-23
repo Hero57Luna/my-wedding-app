@@ -26,8 +26,8 @@ function ThankYouSection() {
         <FormattedMessage id="thankyou.message" />
       </p>
 
-      <p className="mt-6 whitespace-pre-line text-center font-chomsky text-2xl text-stone-800">
-        <FormattedMessage id="gift.signOff" />
+      <p className="mt-6 whitespace-pre-line text-center font-serif text-2xl text-stone-600">
+        <strong><FormattedMessage id="gift.signOff"/></strong>
       </p>
     </AnimatedSection>
   )
