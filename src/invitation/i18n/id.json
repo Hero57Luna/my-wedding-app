@@ -16,7 +16,7 @@
   "opening.title": "Hari Pernikahan Kami",
   "opening.invited": "Anda Diundang",
   "opening.greeting": "Kepada Keluarga & Sahabat",
-  "opening.body": "Dengan penuh sukacita kami mengundang Anda untuk berbagi hari yang berarti ini bersama kami. Kehadiran Anda akan membuat hari pernikahan kami semakin istimewa.",
+  "opening.body": "Dengan penuh sukacita kami mengundang Bapak/Ibu untuk berbagi hari yang berarti ini bersama kami. Kehadiran Bapak/Ibu akan membuat hari pernikahan kami semakin istimewa.",
   "opening.signOff": "Dengan penuh cinta,\n<b>Bagas & Dhela</b>",
 
   "groom.heading": "Mempelai Pria",
@@ -57,19 +57,19 @@
   "gallery.imageAlt": "Momen prewedding {number}",
 
   "gift.heading": "Hadiah Pernikahan",
-  "gift.intro": "Kehadiran Anda sudah menjadi hadiah yang berarti bagi kami. Namun apabila Anda ingin memberi sesuatu yang lain, silakan tekan tombol di bawah ini untuk informasi selengkapnya:",
+  "gift.intro": "Kehadiran Bapak/Ibu sudah menjadi hadiah yang berarti bagi kami. Namun apabila Bapak/Ibu ingin memberi sesuatu yang lain, silakan tekan tombol di bawah ini untuk informasi selengkapnya:",
   "gift.button": "Hadiah Pernikahan",
   "gift.bestWishes": "Ucapan & Doa",
-  "gift.blessing": "Merupakan kehormatan terbesar bagi kami untuk menerima kehadiran serta doa restu Anda saat kami memulai perjalanan sebagai suami dan istri.",
+  "gift.blessing": "Merupakan kehormatan terbesar bagi kami untuk menerima kehadiran serta doa restu Bapak/Ibu saat kami memulai perjalanan sebagai suami dan istri.",
   "gift.signOff": "Bagas & Dhela",
 
   "thankyou.label": "Terima Kasih",
   "thankyou.heading": "Terima Kasih",
-  "thankyou.message": "Terima kasih telah menjadi bagian dari kisah kami. Kehadiran, cinta, dan doa Anda sangat berarti bagi kami saat memulai babak baru ini bersama.",
+  "thankyou.message": "Terima kasih telah menjadi bagian dari kisah kami. Kehadiran, cinta, dan doa Bapak/Ibu sangat berarti bagi kami saat memulai babak baru ini bersama.",
 
   "giftView.close": "Tutup hadiah pernikahan",
   "giftView.label": "Dengan Cinta",
-  "giftView.intro": "Kehadiran Anda sudah menjadi hadiah yang berarti bagi kami. Namun apabila Anda ingin memberi sesuatu yang lain, berikut beberapa cara yang dapat Anda pilih.",
+  "giftView.intro": "Kehadiran Bapak/Ibu sudah menjadi hadiah yang berarti bagi kami. Namun apabila Bapak/Ibu ingin memberi sesuatu yang lain, berikut beberapa cara yang dapat Bapak/Ibu pilih.",
 
   "card.copy": "Salin",
   "card.copied": "Tersalin",
@@ -106,7 +106,7 @@
 
   "form.error": "Terjadi kesalahan. Silakan coba lagi.",
 
-  "footer.title": "Undangan Pernikahan",
+  "footer.title": "Bagas & Dhela",
   "footer.page": "Halaman {page}",
 
   "audio.mute": "Matikan musik latar",
