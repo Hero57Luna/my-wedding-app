@@ -34,18 +34,18 @@ function WeddingGiftView({ onClose }) {
         </p>
 
         <div className="mt-6 space-y-4">
-          <BankAccountCard
-            name={GIFT_ACCOUNTS.groom.name}
-            bankName={GIFT_ACCOUNTS.groom.bankName}
-            accountNumber={GIFT_ACCOUNTS.groom.accountNumber}
-            accountHolder={GIFT_ACCOUNTS.groom.accountHolder}
-          />
-          <BankAccountCard
-            name={GIFT_ACCOUNTS.bride.name}
-            bankName={GIFT_ACCOUNTS.bride.bankName}
-            accountNumber={GIFT_ACCOUNTS.bride.accountNumber}
-            accountHolder={GIFT_ACCOUNTS.bride.accountHolder}
-          />
+          {[GIFT_ACCOUNTS.groom, GIFT_ACCOUNTS.bride].flatMap((person) =>
+            person.accounts.map((account) => (
+              <BankAccountCard
+                key={`${person.name}-${account.accountNumber}`}
+                name={person.name}
+                bankName={account.bankName}
+                bankLogo={account.bankLogo}
+                accountNumber={account.accountNumber}
+                accountHolder={account.accountHolder}
+              />
+            )),
+          )}
         </div>
 
         <div className="mt-4">
