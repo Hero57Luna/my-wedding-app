@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 const navItems = [
   { to: '/dashboard', label: 'Home', end: true },
   { to: '/dashboard/guests', label: 'Guest' },
+  { to: '/dashboard/import', label: 'Import' },
 ]
 
 function linkClassName({ isActive }) {
