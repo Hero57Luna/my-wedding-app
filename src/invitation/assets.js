@@ -23,7 +23,7 @@ export const EVENT_TIMES = {
 }
 
 export const GALLERY_IMAGES = [
-  'https://weddingofbagasdhela.com/gallery1.jpeg',
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2Fgallery1.jpeg?alt=media&token=5f50045e-24d2-4416-846f-f02a42487538',
   'https://weddingofbagasdhela.com/gallery2.jpeg',
   'https://weddingofbagasdhela.com/gallery3.jpeg',
   'https://weddingofbagasdhela.com/gallery4.jpeg',

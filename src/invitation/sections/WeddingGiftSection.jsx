@@ -42,10 +42,6 @@ function WeddingGiftSection({ onOpenGift }) {
       </p>
 
       <BestWishesForm />
-
-      <p className="mt-6 whitespace-pre-line font-serif text-lg italic text-stone-800">
-        <FormattedMessage id="gift.signOff" />
-      </p>
     </AnimatedSection>
   )
 }

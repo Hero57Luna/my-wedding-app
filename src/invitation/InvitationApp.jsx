@@ -12,6 +12,7 @@ import GallerySection from './sections/GallerySection'
 import GroomSection from './sections/GroomSection'
 import OurJourneySection from './sections/OurJourneySection'
 import OpeningSection from './sections/OpeningSection'
+import ThankYouSection from './sections/ThankYouSection'
 import WeddingGiftSection from './sections/WeddingGiftSection'
 
 const FADE_MS = 700
@@ -131,6 +132,7 @@ function InvitationApp() {
             <OurJourneySection />
             <GallerySection />
             <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} />
+            <ThankYouSection />
           </LocaleFade>
         </section>
       </div>
