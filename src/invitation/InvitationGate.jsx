@@ -17,7 +17,7 @@ function InvitationGate() {
     if (!ref) return
     let cancelled = false
     getDoc(doc(db, 'guests', ref))
-      .then((snap) => !cancelled && setGuest(snap.exists() ? snap.data() : null))
+      .then((snap) => !cancelled && setGuest(snap.exists() ? { id: snap.id, ...snap.data() } : null))
       .catch(() => !cancelled && setGuest(null))
     return () => {
       cancelled = true

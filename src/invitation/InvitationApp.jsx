@@ -132,7 +132,7 @@ function InvitationApp({ guest }) {
             <EventDetailsSection receptionTime={guest.time} />
             <OurJourneySection />
             <GallerySection />
-            <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} />
+            <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} guestId={guest.id} />
             <ThankYouSection />
           </LocaleFade>
         </section>

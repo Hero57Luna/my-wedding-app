@@ -4,7 +4,7 @@ import AnimatedSection from '../components/AnimatedSection'
 import BestWishesForm from '../components/BestWishesForm'
 import SectionLabel from '../components/SectionLabel'
 
-function WeddingGiftSection({ onOpenGift }) {
+function WeddingGiftSection({ onOpenGift, guestId }) {
   const intl = useIntl()
 
   return (
@@ -41,7 +41,7 @@ function WeddingGiftSection({ onOpenGift }) {
         <FormattedMessage id="gift.blessing" />
       </p>
 
-      <BestWishesForm />
+      <BestWishesForm guestId={guestId} />
     </AnimatedSection>
   )
 }

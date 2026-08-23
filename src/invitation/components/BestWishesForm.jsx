@@ -3,11 +3,13 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import {
   addDoc,
   collection,
+  doc,
   limit,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 
@@ -18,10 +20,11 @@ const WINDOW = 100
 
 const wishesRef = collection(db, 'best-wishes')
 
-function BestWishesForm() {
+function BestWishesForm({ guestId }) {
   const intl = useIntl()
   const [from, setFrom] = useState('')
   const [wishes, setWishes] = useState('')
+  const [attending, setAttending] = useState(null)
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(null)
   const [items, setItems] = useState([])
@@ -38,6 +41,7 @@ function BestWishesForm() {
               id: docSnap.id,
               from: data.from ?? '',
               wishes: data.wishes ?? '',
+              attending: data.attending ?? null,
               createdAt: data.createdAt?.toDate() ?? null,
             }
           }),
@@ -56,7 +60,7 @@ function BestWishesForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!from.trim() || !wishes.trim() || saving) return
+    if (!from.trim() || !wishes.trim() || attending === null || saving) return
 
     setSaving(true)
     setStatus(null)
@@ -64,11 +68,16 @@ function BestWishesForm() {
       await addDoc(wishesRef, {
         from: from.trim(),
         wishes: wishes.trim(),
+        attending,
         createdAt: serverTimestamp(),
       })
+      if (guestId) {
+        await updateDoc(doc(db, 'guests', guestId), { rsvp: attending })
+      }
       setStatus({ type: 'success', text: intl.formatMessage({ id: 'wishes.success' }) })
       setFrom('')
       setWishes('')
+      setAttending(null)
       setPage(0)
     } catch (err) {
       console.error(err)
@@ -146,6 +155,32 @@ function BestWishesForm() {
           />
         </div>
 
+        <div>
+          <span className="block font-serif text-xs uppercase tracking-[0.15em] text-stone-600">
+            <FormattedMessage id="wishes.rsvp" />
+          </span>
+          <div className="mt-2 flex flex-col gap-2">
+            <label className="flex items-center justify-between gap-3 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700">
+              <FormattedMessage id="wishes.rsvpYes" />
+              <input
+                type="checkbox"
+                checked={attending === true}
+                onChange={() => setAttending(true)}
+                disabled={saving}
+              />
+            </label>
+            <label className="flex items-center justify-between gap-3 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700">
+              <FormattedMessage id="wishes.rsvpNo" />
+              <input
+                type="checkbox"
+                checked={attending === false}
+                onChange={() => setAttending(false)}
+                disabled={saving}
+              />
+            </label>
+          </div>
+        </div>
+
         <button
           type="submit"
           disabled={saving}
@@ -167,7 +202,18 @@ function BestWishesForm() {
               className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
             >
               <header className="flex items-baseline justify-between gap-3">
-                <p className="truncate font-serif text-sm font-bold text-stone-900">{item.from}</p>
+                <p className="flex min-w-0 items-baseline gap-2 truncate font-serif text-sm font-bold text-stone-900">
+                  <span className="font-serif text-xs uppercase">{item.from}</span>
+                  {item.attending !== null && (
+                    <span
+                      className={`font-serif text-xs uppercase tracking-wide ${
+                        item.attending ? 'text-green-600' : 'text-red-500'
+                      }`}
+                    >
+                      <FormattedMessage id={item.attending ? 'wishes.rsvpYesShort' : 'wishes.rsvpNoShort'} />
+                    </span>
+                  )}
+                </p>
                 <p className="shrink-0 text-xs text-stone-400">
                   {item.createdAt
                     ? intl.formatDate(item.createdAt, {
