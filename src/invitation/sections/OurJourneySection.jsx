@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl'
-import { GALLERY_IMAGES } from '../assets'
+import { OUR_JOURNEY_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
@@ -22,7 +22,7 @@ function OurJourneySection() {
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
         <img
-          src={GALLERY_IMAGES[0]}
+          src={OUR_JOURNEY_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
           loading="lazy"

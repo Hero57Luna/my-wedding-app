@@ -25,9 +25,12 @@ export const EVENT_TIMES = {
   time2: '13:00 - 14:00',
 }
 
+export const OUR_JOURNEY_IMAGE =
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/LOVE-STORY.webp?alt=media&token=835d77b7-8f40-4f3e-9680-6807a9f0dfbe'
+
 export const GALLERY_IMAGES = [
-  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGALLERY-1.webp?alt=media&token=53197796-5cad-4757-a458-aa12d7a7732f',
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGALLERY-2.webp?alt=media&token=a5ebd732-ddd5-4f45-92a6-6620ab6f9614',
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGROOM-IMAGE.webp?alt=media&token=2f42d574-5425-42df-87cf-3650e2c26ea1',
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGALLERY-3.webp?alt=media&token=48158cbd-c746-4bae-a99e-155b5e4215b2',
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGALLERY-4.webp?alt=media&token=4d564ee1-0ea9-411c-aaf8-d30295de0cbf',
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/galery-images%2FGALLERY-5.webp?alt=media&token=82da24b3-febf-4ddb-a0cd-8c0d35c23f55',
@@ -35,7 +38,10 @@ export const GALLERY_IMAGES = [
 ]
 
 export const WEDDING_GIFT = 
-  ''
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/WEDDING-GIFT.webp?alt=media&token=7b46cf32-700d-4f81-b061-4c02ac3546ba'
+
+export const THANK_YOU_IMAGE =
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/THANK-YOU.webp?alt=media&token=d7adf6bc-775a-4ecc-b003-985e0014419f'
 
 export const GIFT_ACCOUNTS = {
   groom: {

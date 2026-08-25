@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl'
-import { GALLERY_IMAGES } from '../assets'
+import { THANK_YOU_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import SectionLabel from '../components/SectionLabel'
 
@@ -16,7 +16,7 @@ function ThankYouSection() {
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
         <img
-          src={GALLERY_IMAGES[2]}
+          src={THANK_YOU_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
           loading="lazy"
@@ -28,7 +28,7 @@ function ThankYouSection() {
         <FormattedMessage id="thankyou.message" />
       </p>
 
-      <p className="mt-6 whitespace-pre-line text-center font-serif text-2xl text-stone-600">
+      <p className="mt-6 whitespace-pre-line text-center font-serif text-md text-stone-600">
         <strong><FormattedMessage id="gift.signOff"/></strong>
       </p>
     </AnimatedSection>
