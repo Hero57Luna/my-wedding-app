@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { EVENT_TIMES, MAIN_IMAGE, WEEDING_DETAILS } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 
 const MAPS_URL = 'https://maps.app.goo.gl/c5F645zUXDJhymgv8?g_st=ic'
 
@@ -47,12 +48,10 @@ function EventDetailsSection({ receptionTime }) {
         </h3>
 
         <figure className="mt-5 overflow-hidden border border-stone-300">
-          <img
+          <LazyImage
             src={WEEDING_DETAILS}
             alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-            className="aspect-[4/3] w-full object-cover"
-            loading="lazy"
-            decoding="async"
+            className="aspect-[4/3] w-full"
           />
         </figure>
 

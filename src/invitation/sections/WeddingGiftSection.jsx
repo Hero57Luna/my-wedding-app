@@ -2,6 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { GALLERY_IMAGES, WEDDING_GIFT } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
 import BestWishesForm from '../components/BestWishesForm'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 function WeddingGiftSection({ onOpenGift, guestId }) {
@@ -30,12 +31,10 @@ function WeddingGiftSection({ onOpenGift, guestId }) {
       </div>
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
-        <img
+        <LazyImage
           src={WEDDING_GIFT}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/3] w-full"
         />
       </figure>
 

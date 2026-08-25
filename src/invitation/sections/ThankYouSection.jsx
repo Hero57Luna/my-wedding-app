@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { THANK_YOU_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 function ThankYouSection() {
@@ -15,12 +16,10 @@ function ThankYouSection() {
       </h3>
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
-        <img
+        <LazyImage
           src={THANK_YOU_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/3] w-full"
         />
       </figure>
 

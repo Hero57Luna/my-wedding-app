@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { MAIN_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 // WIB (UTC+7) so the countdown is identical for every guest, wherever they open it.
@@ -52,12 +53,10 @@ function CountdownSection() {
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-200/50">
-        <img
+        <LazyImage
           src={MAIN_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/3] w-full"
         />
       </figure>
 

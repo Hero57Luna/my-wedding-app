@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { OUR_JOURNEY_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 const PARAGRAPH_IDS = [
@@ -21,12 +22,10 @@ function OurJourneySection() {
       <SectionLabel label={intl.formatMessage({ id: 'journey.label' })} />
 
       <figure className="mt-4 overflow-hidden border border-stone-300">
-        <img
+        <LazyImage
           src={OUR_JOURNEY_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/3] w-full"
         />
       </figure>
 

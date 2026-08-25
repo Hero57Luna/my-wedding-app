@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { BRIDE_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 function BrideSection() {
@@ -16,12 +17,10 @@ function BrideSection() {
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-200/50">
-        <img
+        <LazyImage
           src={BRIDE_IMAGE}
           alt="Dhelanda La Nina Dwipa Tiara Andiyani"
-          className="aspect-[4/5] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/5] w-full"
         />
       </figure>
 

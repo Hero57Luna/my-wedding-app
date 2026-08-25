@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { OPENING_IMAGE } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 
 function OpeningSection() {
   const intl = useIntl()
@@ -23,12 +24,10 @@ function OpeningSection() {
       </div>
 
       <figure className="mt-5 overflow-hidden border border-stone-300 bg-stone-100">
-        <img
+        <LazyImage
           src={OPENING_IMAGE}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          className="aspect-[4/3] w-full"
         />
       </figure>
 

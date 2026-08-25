@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 import { GALLERY_IMAGES } from '../assets'
 import AnimatedSection from '../components/AnimatedSection'
+import LazyImage from '../components/LazyImage'
 import SectionLabel from '../components/SectionLabel'
 
 function GallerySection() {
@@ -21,12 +22,10 @@ function GallerySection() {
       <div className="mt-6 grid grid-cols-2 gap-2">
         {GALLERY_IMAGES.map((image, index) => (
           <figure key={image} className="overflow-hidden border border-stone-300 bg-stone-100">
-            <img
+            <LazyImage
               src={image}
               alt={intl.formatMessage({ id: 'gallery.imageAlt' }, { number: index + 1 })}
-              className="h-36 w-full object-cover"
-              loading="lazy"
-              decoding="async"
+              className="h-36 w-full"
             />
           </figure>
         ))}
