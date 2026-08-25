@@ -11,12 +11,10 @@ import {
   serverTimestamp,
   startAfter,
   updateDoc,
-  where,
 } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 
 export const GUESTS_PAGE_SIZE = 50
-const SEARCH_FETCH_MAX = 100
 
 const guestsRef = collection(db, 'guests')
 
@@ -38,86 +36,23 @@ function tokenizeSearch(search) {
 }
 
 function matchesAllTokens(data, tokens) {
-  const haystack = (data.search_name ?? '').toLowerCase()
-  return tokens.every((token) => haystack.includes(token.toLowerCase()))
+  const haystack = (
+    data.search_name ?? `${data.name ?? ''} ${data.address ?? ''}`
+  ).toLowerCase()
+  return tokens.every((token) => haystack.includes(token))
 }
 
-function prefixQuery(field, term, pageSize, cursor) {
-  const end = `${term}\uf8ff`
-  if (cursor) {
-    return query(
-      guestsRef,
-      where(field, '>=', term),
-      where(field, '<=', end),
-      orderBy(field),
-      startAfter(cursor),
-      limit(pageSize),
-    )
-  }
-  return query(
-    guestsRef,
-    where(field, '>=', term),
-    where(field, '<=', end),
-    orderBy(field),
-    limit(pageSize),
-  )
-}
-
-async function queryByPrefix(field, term, max) {
-  if (!term) return []
-  const snapshot = await getDocs(prefixQuery(field, term, max))
-  return snapshot.docs
-}
-
-function mergeGuestDocs(...docGroups) {
-  const byId = new Map()
-  for (const docs of docGroups) {
-    for (const docSnap of docs) {
-      byId.set(docSnap.id, docSnap)
-    }
-  }
-  return [...byId.values()].sort((a, b) => {
-    const ad = a.data()
-    const bd = b.data()
-    return (
-      (ad.name ?? '').localeCompare(bd.name ?? '') ||
-      (ad.address ?? '').localeCompare(bd.address ?? '')
-    )
-  })
-}
-
-async function fetchAllGuestsBrief(max) {
-  const snapshot = await getDocs(
-    query(
-      guestsRef,
-      orderBy('name'),
-      orderBy('address'),
-      limit(max),
-    ),
-  )
-  return snapshot.docs
-}
-
-function filterByTokens(docs, tokens) {
-  return docs.filter((docSnap) => matchesAllTokens(docSnap.data(), tokens))
-}
-
-/** Token search: every word must appear somewhere in search_name (first_name + last_name + address). */
-export async function fetchSearchGuests(search, max = SEARCH_FETCH_MAX) {
-  const tokens = tokenizeSearch(search)
+/** Token search: every word must appear somewhere in search_name (name + address). */
+export async function fetchSearchGuests(search) {
+  const tokens = tokenizeSearch(search).map((t) => t.toLowerCase())
   if (tokens.length === 0) return []
 
-  const termLower = search.trim().toLowerCase()
-
-  const prefixDocs = await Promise.all([
-    queryByPrefix('search_name', termLower, max),
-    ...tokens.map((token) =>
-      queryByPrefix('search_name', token.toLowerCase(), max),
-    ),
-  ])
-
-  const merged = mergeGuestDocs(...prefixDocs, await fetchAllGuestsBrief(max))
-  return filterByTokens(merged, tokens).map(mapGuestDoc)
+  // Firestore can't do substring matching, so read the collection and filter here.
+  // ponytail: full scan per search; add a token array + array-contains query if the guest list outgrows a few thousand.
+  const snapshot = await getDocs(query(guestsRef, orderBy('name'), orderBy('address')))
+  return snapshot.docs
+    .filter((docSnap) => matchesAllTokens(docSnap.data(), tokens))
+    .map(mapGuestDoc)
 }
 
 async function fetchBrowsePage({ cursor, pageSize }) {
