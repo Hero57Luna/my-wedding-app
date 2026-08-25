@@ -137,6 +137,10 @@ function InvitationApp({ guest }) {
             <GallerySection />
             <WeddingGiftSection onOpenGift={() => setGiftOpen(true)} guestId={guest.id} />
             <ThankYouSection />
+
+            <p className="border-t border-stone-300 pt-4 text-center font-serif text-xs uppercase tracking-[0.2em] text-stone-500">
+              <FormattedMessage id="copyright.text" values={{ year: 2026 }} />
+            </p>
           </LocaleFade>
         </section>
       </div>
