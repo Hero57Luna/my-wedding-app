@@ -5,7 +5,7 @@ export const OPENING_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/OPENING-IMAGE.webp?alt=media&token=1edf2522-fcca-445d-b5b1-5c9f51f91fa5'
 
 export const COVER_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/COVER-IMAGE.webp?alt=media&token=8918649a-81c1-4d86-87df-dd980a744130'
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/COVER-IMAGE.webp?alt=media&token=45fc8ae3-4563-425c-a648-78b3a9e77620'
 
 export const GROOM_IMAGE =
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/GROOM-IMAGE.webp?alt=media&token=a586362e-1cb6-4b22-a784-dd9f869f5507'
@@ -41,7 +41,7 @@ export const WEDDING_GIFT =
   'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/WEDDING-GIFT.webp?alt=media&token=5c9dd79f-3f7a-4637-9b8b-bfe7b28e5f89'
 
 export const THANK_YOU_IMAGE =
-  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/THANK-YOU.webp?alt=media&token=d7adf6bc-775a-4ecc-b003-985e0014419f'
+  'https://firebasestorage.googleapis.com/v0/b/wedding-bagas-dhela.firebasestorage.app/o/THANK-YOU.webp?alt=media&token=b7b9d6f5-1429-41e7-bfe1-b416c600e8b6'
 
 export const GIFT_ACCOUNTS = {
   groom: {
