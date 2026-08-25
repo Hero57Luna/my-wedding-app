@@ -25,6 +25,8 @@ function GallerySection() {
               src={image}
               alt={intl.formatMessage({ id: 'gallery.imageAlt' }, { number: index + 1 })}
               className="h-36 w-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </figure>
         ))}

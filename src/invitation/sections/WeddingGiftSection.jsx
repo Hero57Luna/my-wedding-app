@@ -34,6 +34,8 @@ function WeddingGiftSection({ onOpenGift, guestId }) {
           src={GALLERY_IMAGES[1]}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </figure>
 

@@ -19,6 +19,8 @@ function ThankYouSection() {
           src={GALLERY_IMAGES[2]}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
           className="aspect-[4/3] w-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </figure>
 

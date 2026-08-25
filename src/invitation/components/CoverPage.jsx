@@ -34,6 +34,9 @@ function CoverPage({ guestName, onOpenInvitation }) {
             src={COVER_IMAGE}
             alt={intl.formatMessage({ id: 'common.coupleAlt' })}
             className="aspect-[4/5] w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </figure>
 

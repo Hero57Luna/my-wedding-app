@@ -20,6 +20,8 @@ function BrideSection() {
           src={BRIDE_IMAGE}
           alt="Dhelanda La Nina Dwipa Tiara Andiyani"
           className="aspect-[4/5] w-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </figure>
 

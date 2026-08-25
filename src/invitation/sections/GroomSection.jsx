@@ -20,6 +20,8 @@ function GroomSection() {
           src={GROOM_IMAGE}
           alt="Rahadian Bagaskara Adikusuma"
           className="aspect-[4/5] w-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </figure>
 

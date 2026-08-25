@@ -111,6 +111,9 @@ function InvitationApp({ guest }) {
             src={MAIN_IMAGE}
             alt={intl.formatMessage({ id: 'aside.alt' })}
             className="sticky top-0 h-screen w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
           <LocaleFade className="absolute bottom-10 left-10 border-l border-white/70 pl-5 text-white">
