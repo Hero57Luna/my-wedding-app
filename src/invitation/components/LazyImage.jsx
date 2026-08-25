@@ -14,7 +14,7 @@ function LazyImage({ src, alt, className = '', ...imgProps }) {
       <img
         src={src}
         alt={alt}
-        loading="lazy"
+        loading="eager"
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}

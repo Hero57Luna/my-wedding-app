@@ -11,7 +11,7 @@ function BankAccountCard({ name, bankName, bankLogo, accountNumber, accountHolde
               src={bankLogo}
               alt={bankName}
               className="ml-auto h-6 w-auto object-contain"
-              loading="lazy"
+              loading="eager"
               decoding="async"
             />
           ) : (
