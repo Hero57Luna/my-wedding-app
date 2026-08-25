@@ -25,7 +25,7 @@ function GallerySection() {
             <LazyImage
               src={image}
               alt={intl.formatMessage({ id: 'gallery.imageAlt' }, { number: index + 1 })}
-              className="h-36 w-full"
+              className="h-64 w-full"
             />
           </figure>
         ))}

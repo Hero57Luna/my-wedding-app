@@ -34,7 +34,7 @@ function WeddingGiftSection({ onOpenGift, guestId }) {
         <LazyImage
           src={WEDDING_GIFT}
           alt={intl.formatMessage({ id: 'common.coupleAlt' })}
-          className="aspect-[4/3] w-full"
+          className="aspect-[4/3] w-full h-96"
         />
       </figure>
 
