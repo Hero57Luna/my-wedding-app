@@ -7,7 +7,7 @@ function LazyImage({ src, alt, className = '', ...imgProps }) {
     <div className={`relative overflow-hidden ${className}`}>
       <div
         aria-hidden="true"
-        className={`absolute inset-0 animate-pulse bg-stone-200 transition-opacity duration-300 ${
+        className={`absolute inset-0 animate-pulse bg-stone-300 transition-opacity duration-300 ${
           loaded ? 'opacity-0' : 'opacity-100'
         }`}
       />
