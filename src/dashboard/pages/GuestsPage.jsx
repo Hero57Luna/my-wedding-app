@@ -5,12 +5,18 @@ import { addGuest, updateGuest, deleteGuest, GUESTS_PAGE_SIZE } from '../service
 
 const DEBOUNCE_MS = 300
 
+const SESSION_OPTIONS = [
+  { label: 'First - 12:00 - 13:30 WIB', value: '12:00 - 13:30 WIB' },
+  { label: 'Second - 13:00 - 14:30 WIB', value: '13:00 - 14:30 WIB' },
+]
+
 function GuestDetailModal({ guest, onClose }) {
   const fields = [
     { label: 'Name', value: guest.name || '—' },
     { label: 'Address', value: guest.address || '—' },
     { label: 'Present', value: guest.present ? 'Yes' : 'No' },
     { label: 'VIP', value: guest.vip ? 'Yes' : '-' },
+    { label: 'Session', value: guest.time || '—' },
     { label: 'Arrival', value: guest.arrival ? guest.arrival.toLocaleString() : '-' },
   ]
 
@@ -65,7 +71,7 @@ function GuestDetailModal({ guest, onClose }) {
   )
 }
 
-const EMPTY_FORM = { name: '', address: '', gender: 'male', present: 'true', vip: 'false' }
+const EMPTY_FORM = { name: '', address: '', gender: 'male', present: 'true', vip: 'false', time: SESSION_OPTIONS[0].value }
 
 function AddGuestModal({ onClose, onSaved }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -88,6 +94,7 @@ function AddGuestModal({ onClose, onSaved }) {
         gender: form.gender,
         present: form.present === 'true',
         vip: form.vip === 'true',
+        time: form.time,
       })
       onSaved()
     } catch (err) {
@@ -216,6 +223,22 @@ function AddGuestModal({ onClose, onSaved }) {
             </select>
           </div>
 
+          <div>
+            <label htmlFor="ag-time" className={labelClass}>Session</label>
+            <select
+              id="ag-time"
+              name="time"
+              value={form.time}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            >
+              {SESSION_OPTIONS.map(({ label, value }) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
             <button
               type="button"
@@ -246,6 +269,7 @@ function EditGuestModal({ guest, onClose, onSaved }) {
     gender: guest.gender ?? 'male',
     present: guest.present ? 'true' : 'false',
     vip: guest.vip ? 'true' : 'false',
+    time: guest.time || SESSION_OPTIONS[0].value,
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -266,6 +290,7 @@ function EditGuestModal({ guest, onClose, onSaved }) {
         gender: form.gender,
         present: form.present === 'true',
         vip: form.vip === 'true',
+        time: form.time,
       })
       onSaved()
     } catch (err) {
@@ -391,6 +416,22 @@ function EditGuestModal({ guest, onClose, onSaved }) {
             >
               <option value="false">No</option>
               <option value="true">Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="eg-time" className={labelClass}>Session</label>
+            <select
+              id="eg-time"
+              name="time"
+              value={form.time}
+              onChange={handleChange}
+              disabled={saving}
+              className={inputClass}
+            >
+              {SESSION_OPTIONS.map(({ label, value }) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
             </select>
           </div>
 
