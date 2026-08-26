@@ -10,7 +10,18 @@ const SESSION_OPTIONS = [
   { label: 'Second - 13:00 - 14:30 WIB', value: '13:00 - 14:30 WIB' },
 ]
 
+const BASE_WEDDING_URL = import.meta.env.VITE_BASE_WEDDING_URL
+
 function GuestDetailModal({ guest, onClose }) {
+  const invitationUrl = BASE_WEDDING_URL ? `${BASE_WEDDING_URL}?ref=${guest.id}` : null
+  const [copied, setCopied] = useState(false)
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(invitationUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
   const fields = [
     { label: 'Name', value: guest.name || '—' },
     { label: 'Address', value: guest.address || '—' },
@@ -65,6 +76,19 @@ function GuestDetailModal({ guest, onClose }) {
               <dd className="text-right text-sm text-stone-800 break-words max-w-[60%]">{value}</dd>
             </div>
           ))}
+          <div className="flex items-center justify-between gap-4 py-3">
+            <dt className="font-serif text-xs uppercase tracking-[0.12em] text-stone-500">Invitation URL</dt>
+            <dd>
+              <button
+                type="button"
+                onClick={handleCopy}
+                disabled={!invitationUrl}
+                className="rounded border border-stone-300 bg-white px-2.5 py-1 font-serif text-xs uppercase tracking-[0.12em] text-stone-600 transition hover:bg-stone-50 hover:text-stone-900 disabled:opacity-50"
+              >
+                {invitationUrl ? (copied ? 'Copied!' : 'Copy Link') : 'Unavailable'}
+              </button>
+            </dd>
+          </div>
         </dl>
       </motion.div>
     </motion.div>
