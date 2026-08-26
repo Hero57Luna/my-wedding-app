@@ -42,6 +42,8 @@ export function validateRow(row) {
       search_name: String(row.search_name ?? '').trim(),
       gender: String(row.gender ?? '').trim(),
       present,
+      remarks: String(row.remarks ?? '').trim(),
+      guest_from: String(row.guest_from ?? '').trim(),
     },
   }
 }
@@ -75,6 +77,8 @@ export function buildXlsxRows(importedItems, baseUrl) {
     search_name: record.search_name,
     gender: record.gender,
     present: record.present,
+    remarks: record.remarks,
+    guest_from: record.guest_from,
     URL: `${baseUrl}?ref=${id}`,
   }))
 }
@@ -91,6 +95,8 @@ export function buildExportXlsxRows(items, baseUrl) {
     search_name: record.search_name,
     gender: record.gender,
     present: record.present,
+    remarks: record.remarks,
+    guest_from: record.guest_from,
     URL: `${baseUrl}?ref=${id}`,
   }))
 }

@@ -80,7 +80,7 @@ function ImportPage() {
       <header className="border-b border-stone-300 pb-6">
         <h2 className="font-serif text-3xl text-stone-900">Import Guests</h2>
         <p className="mt-2 text-stone-600">
-          Upload a CSV with columns: name, address, vip, time, search_name, gender, present.
+          Upload a CSV with columns: name, address, vip, time, search_name, gender, present. Optional: remarks, guest_from.
         </p>
       </header>
 

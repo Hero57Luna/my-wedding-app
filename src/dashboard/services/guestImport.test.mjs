@@ -25,9 +25,14 @@ assert.deepEqual(validateHeaders(['name', 'address', 'vip', 'time', 'search_name
 assert.deepEqual(validateHeaders(['name', 'address']), ['vip', 'time', 'search_name', 'gender', 'present'])
 
 // validateRow: happy path + failure reasons
-const ok = validateRow({ name: 'Mas Tofan', address: 'Malang', vip: '0', time: '13:00', search_name: 'mas tofan malang', gender: 'male', present: '1' })
+const ok = validateRow({ name: 'Mas Tofan', address: 'Malang', vip: '0', time: '13:00', search_name: 'mas tofan malang', gender: 'male', present: '1', remarks: 'BKO4', guest_from: 'Bride' })
 assert.equal(ok.ok, true)
-assert.deepEqual(ok.record, { name: 'Mas Tofan', address: 'Malang', vip: false, time: '13:00', search_name: 'mas tofan malang', gender: 'male', present: true })
+assert.deepEqual(ok.record, { name: 'Mas Tofan', address: 'Malang', vip: false, time: '13:00', search_name: 'mas tofan malang', gender: 'male', present: true, remarks: 'BKO4', guest_from: 'Bride' })
+
+// remarks/guest_from are optional columns -> default to empty strings
+const noExtras = validateRow({ name: 'X', vip: '0', present: '0' })
+assert.equal(noExtras.record.remarks, '')
+assert.equal(noExtras.record.guest_from, '')
 
 assert.equal(validateRow({ name: '', vip: '0', present: '0' }).ok, false)
 assert.equal(validateRow({ name: 'X', vip: 'nope', present: '0' }).ok, false)
@@ -49,11 +54,12 @@ assert.deepEqual(chunkArray([], 50), [])
 
 // buildXlsxRows: URL uses doc id, columns in spec order
 const rows = buildXlsxRows(
-  [{ record: { name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: false }, id: 'abc123' }],
+  [{ record: { name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: false, remarks: 'R', guest_from: 'G' }, id: 'abc123' }],
   'https://example.com/wedding',
 )
 assert.deepEqual(rows[0], {
   name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: false,
+  remarks: 'R', guest_from: 'G',
   URL: 'https://example.com/wedding?ref=abc123',
 })
 
@@ -61,7 +67,7 @@ assert.deepEqual(rows[0], {
 const arrivalDate = new Date('2026-08-26T10:00:00Z')
 const exportRows = buildExportXlsxRows(
   [{
-    record: { name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: true },
+    record: { name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: true, remarks: 'R', guest_from: 'G' },
     id: 'abc123',
     arrival: arrivalDate,
   }],
@@ -71,6 +77,7 @@ assert.deepEqual(exportRows[0], {
   documentID: 'abc123',
   name: 'A', address: 'B', vip: true, session: 'T', arrival: arrivalDate.toLocaleString(),
   search_name: 'a b', gender: 'male', present: true,
+  remarks: 'R', guest_from: 'G',
   URL: 'https://example.com/wedding?ref=abc123',
 })
 

@@ -28,6 +28,8 @@ function GuestDetailModal({ guest, onClose }) {
     { label: 'Present', value: guest.present ? 'Yes' : 'No' },
     { label: 'VIP', value: guest.vip ? 'Yes' : '-' },
     { label: 'Session', value: guest.time || '—' },
+    { label: 'Remarks', value: guest.remarks || '—' },
+    { label: 'Guest From', value: guest.guest_from || '—' },
     { label: 'Arrival', value: guest.arrival ? guest.arrival.toLocaleString() : '-' },
   ]
 
@@ -95,7 +97,7 @@ function GuestDetailModal({ guest, onClose }) {
   )
 }
 
-const EMPTY_FORM = { name: '', address: '', gender: 'male', present: 'true', vip: 'false', time: SESSION_OPTIONS[0].value }
+const EMPTY_FORM = { name: '', address: '', gender: 'male', present: 'true', vip: 'false', time: SESSION_OPTIONS[0].value, remarks: '', guest_from: '' }
 
 function AddGuestModal({ onClose, onSaved }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -119,6 +121,8 @@ function AddGuestModal({ onClose, onSaved }) {
         present: form.present === 'true',
         vip: form.vip === 'true',
         time: form.time,
+        remarks: form.remarks,
+        guest_from: form.guest_from,
       })
       onSaved()
     } catch (err) {
@@ -263,6 +267,33 @@ function AddGuestModal({ onClose, onSaved }) {
             </select>
           </div>
 
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ag-remarks" className={labelClass}>Remarks</label>
+              <input
+                id="ag-remarks"
+                name="remarks"
+                type="text"
+                value={form.remarks}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="ag-guest_from" className={labelClass}>Guest From</label>
+              <input
+                id="ag-guest_from"
+                name="guest_from"
+                type="text"
+                value={form.guest_from}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+          </div>
+
           <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
             <button
               type="button"
@@ -294,6 +325,8 @@ function EditGuestModal({ guest, onClose, onSaved }) {
     present: guest.present ? 'true' : 'false',
     vip: guest.vip ? 'true' : 'false',
     time: guest.time || SESSION_OPTIONS[0].value,
+    remarks: guest.remarks ?? '',
+    guest_from: guest.guest_from ?? '',
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -315,6 +348,8 @@ function EditGuestModal({ guest, onClose, onSaved }) {
         present: form.present === 'true',
         vip: form.vip === 'true',
         time: form.time,
+        remarks: form.remarks,
+        guest_from: form.guest_from,
       })
       onSaved()
     } catch (err) {
@@ -457,6 +492,33 @@ function EditGuestModal({ guest, onClose, onSaved }) {
                 <option key={value} value={value}>{label}</option>
               ))}
             </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="eg-remarks" className={labelClass}>Remarks</label>
+              <input
+                id="eg-remarks"
+                name="remarks"
+                type="text"
+                value={form.remarks}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="eg-guest_from" className={labelClass}>Guest From</label>
+              <input
+                id="eg-guest_from"
+                name="guest_from"
+                type="text"
+                value={form.guest_from}
+                onChange={handleChange}
+                disabled={saving}
+                className={inputClass}
+              />
+            </div>
           </div>
 
           <div className="flex justify-end gap-3 border-t border-stone-100 pt-4">
@@ -657,6 +719,8 @@ function GuestsPage() {
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Address</th>
+              <th className="px-4 py-3">Remarks</th>
+              <th className="px-4 py-3">Guest From</th>
               <th className="px-4 py-3 text-center">Present</th>
               <th className="px-4 py-3 text-center">VIP</th>
               <th className="px-4 py-3"></th>
@@ -665,13 +729,13 @@ function GuestsPage() {
           <tbody className="divide-y divide-stone-100" aria-busy={isBusy}>
             {isBusy ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={7} className="px-4 py-8 text-center text-stone-500">
                   Loading guests…
                 </td>
               </tr>
             ) : guests.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={7} className="px-4 py-8 text-center text-stone-500">
                   No guests found.
                 </td>
               </tr>
@@ -680,6 +744,8 @@ function GuestsPage() {
                 <tr key={guest.id} className="text-stone-800">
                   <td className="max-w-[16rem] truncate px-4 py-3" title={guest.name}>{guest.name}</td>
                   <td className="max-w-[16rem] truncate px-4 py-3" title={guest.address || '—'}>{guest.address || '—'}</td>
+                  <td className="max-w-[12rem] truncate px-4 py-3" title={guest.remarks || '—'}>{guest.remarks || '—'}</td>
+                  <td className="max-w-[12rem] truncate px-4 py-3" title={guest.guest_from || '—'}>{guest.guest_from || '—'}</td>
                   <td className="px-4 py-3 text-center">
                     <input
                       type="checkbox"
