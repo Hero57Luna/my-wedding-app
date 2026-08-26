@@ -56,6 +56,27 @@ export async function fetchSearchGuests(search) {
     .map(mapGuestDoc)
 }
 
+/** Fetch every guest, shaped like import's {record, id} items, for the Export page. */
+export async function fetchAllGuestsForExport() {
+  const snapshot = await getDocs(query(guestsRef, orderBy('name'), orderBy('address')))
+  return snapshot.docs.map((docSnap) => {
+    const data = docSnap.data()
+    return {
+      id: docSnap.id,
+      arrival: data.arrival?.toDate() ?? null,
+      record: {
+        name: data.name ?? '',
+        address: data.address ?? '',
+        vip: data.vip === true,
+        time: data.time ?? '',
+        search_name: data.search_name ?? '',
+        gender: data.gender ?? '',
+        present: data.present === true,
+      },
+    }
+  })
+}
+
 async function fetchBrowsePage({ cursor, pageSize }) {
   const constraints = [
     orderBy('name'),

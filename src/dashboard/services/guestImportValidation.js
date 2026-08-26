@@ -78,3 +78,19 @@ export function buildXlsxRows(importedItems, baseUrl) {
     URL: `${baseUrl}?ref=${id}`,
   }))
 }
+
+/** Full guest columns for the Export page: everything buildXlsxRows has, plus the doc ID and check-in arrival time. */
+export function buildExportXlsxRows(items, baseUrl) {
+  return items.map(({ record, id, arrival }) => ({
+    documentID: id,
+    name: record.name,
+    address: record.address,
+    vip: record.vip,
+    session: record.time,
+    arrival: arrival ? arrival.toLocaleString() : '',
+    search_name: record.search_name,
+    gender: record.gender,
+    present: record.present,
+    URL: `${baseUrl}?ref=${id}`,
+  }))
+}

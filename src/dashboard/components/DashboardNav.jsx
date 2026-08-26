@@ -4,6 +4,7 @@ const navItems = [
   { to: '/dashboard', label: 'Home', end: true },
   { to: '/dashboard/guests', label: 'Guest' },
   { to: '/dashboard/import', label: 'Import' },
+  { to: '/dashboard/export', label: 'Export' },
 ]
 
 function linkClassName({ isActive }) {

@@ -8,6 +8,7 @@ import {
   validateRows,
   chunkArray,
   buildXlsxRows,
+  buildExportXlsxRows,
 } from './guestImportValidation.js'
 
 // toBoolean: accepts 0/1, true/false, yes/no, case-insensitive; rejects junk
@@ -55,5 +56,29 @@ assert.deepEqual(rows[0], {
   name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: false,
   URL: 'https://example.com/wedding?ref=abc123',
 })
+
+// buildExportXlsxRows: documentID + session (record.time) + arrival, on top of buildXlsxRows' columns
+const arrivalDate = new Date('2026-08-26T10:00:00Z')
+const exportRows = buildExportXlsxRows(
+  [{
+    record: { name: 'A', address: 'B', vip: true, time: 'T', search_name: 'a b', gender: 'male', present: true },
+    id: 'abc123',
+    arrival: arrivalDate,
+  }],
+  'https://example.com/wedding',
+)
+assert.deepEqual(exportRows[0], {
+  documentID: 'abc123',
+  name: 'A', address: 'B', vip: true, session: 'T', arrival: arrivalDate.toLocaleString(),
+  search_name: 'a b', gender: 'male', present: true,
+  URL: 'https://example.com/wedding?ref=abc123',
+})
+
+// buildExportXlsxRows: no arrival yet (guest not checked in) -> blank column, not "null"
+const notArrivedRow = buildExportXlsxRows(
+  [{ record: { name: 'A', address: 'B', vip: false, time: 'T', search_name: 'a b', gender: 'male', present: false }, id: 'x', arrival: null }],
+  'https://example.com/wedding',
+)
+assert.equal(notArrivedRow[0].arrival, '')
 
 console.log('guestImport.test.mjs: all assertions passed')

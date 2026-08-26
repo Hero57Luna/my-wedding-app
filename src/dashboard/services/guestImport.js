@@ -2,7 +2,7 @@ import Papa from 'papaparse'
 import * as XLSX from 'xlsx'
 import { collection, doc, writeBatch } from 'firebase/firestore'
 import { db } from '../../firebase/config'
-import { chunkArray, buildXlsxRows, CHUNK_SIZE } from './guestImportValidation'
+import { chunkArray, buildXlsxRows, buildExportXlsxRows, CHUNK_SIZE } from './guestImportValidation'
 
 export * from './guestImportValidation'
 
@@ -48,12 +48,20 @@ export async function importGuestsInBatches(validItems, { onProgress } = {}) {
   return { imported, failed }
 }
 
-/** Build the XLSX workbook and trigger a browser download. */
-export function downloadImportXlsx(importedItems, baseUrl) {
-  const rows = buildXlsxRows(importedItems, baseUrl)
+function writeGuestsXlsx(rows, filenamePrefix) {
   const sheet = XLSX.utils.json_to_sheet(rows)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, sheet, 'Guests')
   const timestamp = new Date().toISOString().slice(0, 10)
-  XLSX.writeFile(workbook, `guests-import-${timestamp}.xlsx`)
+  XLSX.writeFile(workbook, `${filenamePrefix}-${timestamp}.xlsx`)
+}
+
+/** Build the XLSX workbook and trigger a browser download. */
+export function downloadImportXlsx(importedItems, baseUrl) {
+  writeGuestsXlsx(buildXlsxRows(importedItems, baseUrl), 'guests-import')
+}
+
+/** Same as downloadImportXlsx but with a documentID column — used by the Export page. */
+export function downloadExportXlsx(items, baseUrl) {
+  writeGuestsXlsx(buildExportXlsxRows(items, baseUrl), 'guests-export')
 }
