@@ -100,3 +100,40 @@ export function buildExportXlsxRows(items, baseUrl) {
     URL: `${baseUrl}?ref=${id}`,
   }))
 }
+
+/** Columns a bulk-update file may change. Add a column name here to allow updating it. */
+export const UPDATABLE_COLUMNS = ['remarks', 'guest_from', 'search_name']
+
+/**
+ * Shape rows from an edited export file into Firestore updates keyed by documentID.
+ * Blank cells are ignored (this fills gaps, it never clears an existing value).
+ * Returns { updates: [{rowNumber, id, fields}], skipped: [{rowNumber, reason}] }.
+ */
+export function buildGuestUpdates(rows) {
+  const updates = []
+  const skipped = []
+
+  rows.forEach((row, i) => {
+    const rowNumber = i + 2 // +1 for 1-index, +1 for header row
+    const id = String(row.documentID ?? '').trim()
+    if (!id) {
+      skipped.push({ rowNumber, reason: 'documentID is empty' })
+      return
+    }
+
+    const fields = {}
+    for (const col of UPDATABLE_COLUMNS) {
+      const value = String(row[col] ?? '').trim()
+      if (value) fields[col] = value
+    }
+
+    if (Object.keys(fields).length === 0) {
+      skipped.push({ rowNumber, reason: `nothing to update (${UPDATABLE_COLUMNS.join(', ')} all blank)` })
+      return
+    }
+
+    updates.push({ rowNumber, id, fields })
+  })
+
+  return { updates, skipped }
+}

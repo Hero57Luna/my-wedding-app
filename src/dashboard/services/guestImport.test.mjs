@@ -9,6 +9,7 @@ import {
   chunkArray,
   buildXlsxRows,
   buildExportXlsxRows,
+  buildGuestUpdates,
 } from './guestImportValidation.js'
 
 // toBoolean: accepts 0/1, true/false, yes/no, case-insensitive; rejects junk
@@ -87,5 +88,18 @@ const notArrivedRow = buildExportXlsxRows(
   'https://example.com/wedding',
 )
 assert.equal(notArrivedRow[0].arrival, '')
+
+// buildGuestUpdates: only non-blank updatable columns are written, rows without documentID are skipped
+const { updates, skipped } = buildGuestUpdates([
+  { documentID: 'a1', remarks: ' vegetarian ', guest_from: 'Bride' },
+  { documentID: 'b2', remarks: '', guest_from: 'Groom' },
+  { documentID: '', remarks: 'x', guest_from: 'y' },
+  { documentID: 'c3', remarks: '', guest_from: '' },
+])
+assert.deepEqual(updates, [
+  { rowNumber: 2, id: 'a1', fields: { remarks: 'vegetarian', guest_from: 'Bride' } },
+  { rowNumber: 3, id: 'b2', fields: { guest_from: 'Groom' } },
+])
+assert.deepEqual(skipped.map((r) => r.rowNumber), [4, 5])
 
 console.log('guestImport.test.mjs: all assertions passed')

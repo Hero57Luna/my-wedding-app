@@ -5,6 +5,7 @@ const navItems = [
   { to: '/dashboard/guests', label: 'Guest' },
   { to: '/dashboard/import', label: 'Import' },
   { to: '/dashboard/export', label: 'Export' },
+  { to: '/dashboard/bulk-update', label: 'Bulk Update' },
 ]
 
 function linkClassName({ isActive }) {

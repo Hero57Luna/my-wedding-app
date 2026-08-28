@@ -18,6 +18,15 @@ export function parseCsvFile(file) {
   })
 }
 
+/** Parse a CSV or XLSX File into { fields, rows } — XLSX so an edited export file can be fed straight back in. */
+export async function parseSheetFile(file) {
+  if (!/\.xlsx?$/i.test(file.name)) return parseCsvFile(file)
+  const workbook = XLSX.read(await file.arrayBuffer())
+  const sheet = workbook.Sheets[workbook.SheetNames[0]]
+  const rows = XLSX.utils.sheet_to_json(sheet, { defval: '', raw: false })
+  return { fields: Object.keys(rows[0] ?? {}), rows }
+}
+
 /**
  * Write valid rows to the `guests` collection in sequential batches of CHUNK_SIZE.
  * Doc IDs are pre-generated client-side so each row's Firestore ID is known before commit,
@@ -46,6 +55,33 @@ export async function importGuestsInBatches(validItems, { onProgress } = {}) {
   }
 
   return { imported, failed }
+}
+
+/**
+ * Apply {id, fields} updates in sequential batches of CHUNK_SIZE.
+ * ponytail: a batch is all-or-nothing, so one bad documentID fails its whole chunk of 50 —
+ * fine for a one-off cleanup; switch to per-doc updateDoc if partial failure needs isolating.
+ */
+export async function updateGuestsInBatches(updates, { onProgress } = {}) {
+  const updated = []
+  const failed = []
+
+  for (const chunk of chunkArray(updates, CHUNK_SIZE)) {
+    const batch = writeBatch(db)
+    chunk.forEach((item) => batch.update(doc(db, 'guests', item.id), item.fields))
+
+    try {
+      await batch.commit()
+      updated.push(...chunk)
+    } catch (err) {
+      const reason = err instanceof Error ? err.message : 'Firestore write failed'
+      chunk.forEach((item) => failed.push({ rowNumber: item.rowNumber, reason }))
+    }
+
+    onProgress?.({ done: updated.length + failed.length, total: updates.length })
+  }
+
+  return { updated, failed }
 }
 
 function writeGuestsXlsx(rows, filenamePrefix) {
